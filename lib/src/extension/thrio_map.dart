@@ -23,6 +23,7 @@ import 'thrio_object.dart';
 
 extension ThrioMap<K, V> on Map<K, V> {
   /// Filter the key/value of the current map, keeping only simple types.
+  /// 过滤当前映射的键/值，只保留简单类型。
   ///
   Map<K, V> toSimpleMap() {
     final map = <K, V>{};

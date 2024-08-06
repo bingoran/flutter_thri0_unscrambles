@@ -23,6 +23,7 @@ import 'thrio_object.dart';
 
 extension ThrioList<E> on List<E> {
   /// Filter the elements of the current map, keeping only simple types.
+  /// 过滤当前映射的元素，只保留简单类型。
   ///
   List<E> toSimpleList() {
     final list = <E>[];

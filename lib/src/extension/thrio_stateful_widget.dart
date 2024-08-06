@@ -23,6 +23,7 @@ import 'package:flutter/widgets.dart';
 
 extension ThrioStatefulWidget on StatefulWidget {
   /// Get widget state from the global key.
+  /// 从global key获取小部件状态。
   ///
   T? tryStateOf<T extends State<StatefulWidget>>() {
     if (this.key == null) {

@@ -19,7 +19,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-/// Get value from params, throw ArgumentError when`key`'s value  not found .
+/// 从参数中获取值，当“键”的值没有找到时抛出ArgumentError
 ///
 T getValue<T>(dynamic params, String key) {
   final val = getValueOrNull<T>(params, key);
@@ -29,7 +29,7 @@ T getValue<T>(dynamic params, String key) {
   throw ArgumentError.notNull(key);
 }
 
-/// Get value from params, return `defaultValue` when`key`'s value  not found .
+/// 从参数中获取值，当' key '的值没有找到时返回' defaultValue '。
 ///
 T getValueOrDefault<T>(dynamic params, String key, T defaultValue) {
   final val = getValueOrNull<T>(params, key);
@@ -39,7 +39,7 @@ T getValueOrDefault<T>(dynamic params, String key, T defaultValue) {
   return defaultValue;
 }
 
-/// Get value from params.
+/// 从参数中获取值
 ///
 T? getValueOrNull<T>(dynamic params, String key) {
   if (params is Map) {

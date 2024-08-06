@@ -45,7 +45,8 @@ import 'module_route_transitions_builder.dart';
 part 'module_context.dart';
 
 mixin ThrioModule {
-  ///模块化初始化函数，需要在应用初始化时调用一次。
+  ///
+  ///模块化初始化函数，需要在应用初始化时调用一次
   ///
   static Future<void> init(
     ThrioModule rootModule, {
@@ -71,20 +72,20 @@ mixin ThrioModule {
     await anchor.initModule();
   }
 
-  /// Get instance by `T`, `url` and `key`.
-  ///
-  /// `T` can be `ThrioModule`, `NavigatorPageBuilder`, `JsonSerializer`,
-  /// `JsonDeserializer`, `ProtobufSerializer`, `ProtobufDeserializer`,
-  /// `RouteTransitionsBuilder`, default is `ThrioModule`.
-  ///
-  /// If `T` is `ThrioModule`, returns the last module matched by the `url`.
-  ///
-  /// If `T` is `ThrioModule`, `RouteTransitionsBuilder` or
-  /// `NavigatorPageBuilder`, then `url` must not be null or empty.
-  ///
-  /// If `T` is not `ThrioModule`, `RouteTransitionsBuilder` or
-  /// `NavigatorPageBuilder`, and `url` is null or empty, find instance of `T`
-  /// in all modules.
+  ///通过' T '，' url '和' key '获取实例。 
+  /// 
+  /// ' T '可以是' ThrioModule '， ' NavigatorPageBuilder '， ' JsonSerializer '， 
+  /// ' JsonDeserializer '， ' ProtobufSerializer '， ' ProtobufDeserializer '， 
+  /// ' RouteTransitionsBuilder '，默认为' ThrioModule '。 
+  /// 
+  ///如果' T '是' ThrioModule '，返回与' url '匹配的最后一个模块。 
+  /// 
+  ///如果' T '是' ThrioModule '， ' RouteTransitionsBuilder '或 
+  /// ' NavigatorPageBuilder '，那么' url '不能为null或空。 
+  /// 
+  ///如果' T '不是' ThrioModule '， ' RouteTransitionsBuilder '或 
+  /// ' NavigatorPageBuilder '和' url '为空或null，查找' T '的实例 
+  ///在所有模块中。 
   ///
   static T? get<T>({String? url, String? key}) =>
       anchor.get<T>(url: url, key: key);
@@ -94,58 +95,58 @@ mixin ThrioModule {
   static bool contains(String url) =>
       anchor.get<NavigatorPageBuilder>(url: url) != null;
 
-  /// Get instances by `T` and `url`.
-  ///
-  /// `T` can not be optional. Can be `NavigatorPageObserver`,
-  /// `NavigatorRouteObserver`.
-  ///
-  /// If `T` is `NavigatorPageObserver`, returns all page observers
-  /// matched by `url`.
-  ///
-  /// If `T` is `NavigatorRouteObserver`, returns all route observers
-  /// matched by `url`.
+  ///通过' T '和' url '获取实例。 
+  /// 
+  /// ' T '不能为可选项。可以是' NavigatorPageObserver '， 
+  /// “NavigatorRouteObserver”。 
+  /// 
+  ///如果' T '是' NavigatorPageObserver '，返回所有的页面观察者 
+  ///匹配' url '。 
+  /// 
+  ///如果' T '是' NavigatorRouteObserver '，返回所有的路由观察者 
+  ///匹配' url '。 
   ///
   static Iterable<T> gets<T>({required String url}) => anchor.gets<T>(url);
 
   @protected
   final modules = <String, ThrioModule>{};
 
-  /// A [Key] is an identifier for a module.
+  /// [Key]是模块的标识符
   ///
   @protected
   String get key => '';
 
-  /// Get parent module.
+  ///获取父模块。
   ///
   @protected
   ThrioModule? get parent => parentOf[this];
 
   String? _url;
 
-  /// Get route url by join all route node's name.
+  ///通过join所有路由节点的名称获取路由url
   ///
   String get url {
     _initUrl(this);
     return _url!;
   }
 
-  /// `ModuleContext` of current module.
+  ///当前模块的' ModuleContext '。
   ///
   @protected
   ModuleContext get moduleContext => _moduleContext;
   late ModuleContext _moduleContext;
 
-  /// Call at module init start.
+  ///调用module init start。
   ///
   static void Function(String)? get onModuleInitStart => _onModuleInitStart;
   static void Function(String)? _onModuleInitStart;
 
-  /// Call at module init end.
+  ///在模块init结束时调用。
   static void Function(String)? get onModuleInitEnd => _onModuleInitEnd;
   static void Function(String)? _onModuleInitEnd;
 
-  /// A function for registering a module, which will call
-  /// the `onModuleRegister` function of the `module`.
+  ///一个用于注册模块的函数，该函数将调用 
+  ///模块的' onmodulereregister '函数。 
   ///
   @protected
   void registerModule(
@@ -167,13 +168,13 @@ mixin ThrioModule {
     }
   }
 
-  /// A function for module initialization that will call the
-  /// `onModuleInit`, `onPageBuilderRegister`,
-  /// `onRouteTransitionsBuilderRegister`, `onPageObserverRegister`
-  /// `onRouteObserverRegister`, `onJsonSerializerRegister`,
-  /// `onJsonDeserializerRegister`, `onProtobufSerializerRegister`,
-  /// `onProtobufDeserializerRegister` and `onModuleAsyncInit`
-  /// methods of all modules.
+  ///一个用于模块初始化的函数，它将调用 
+  /// ' onModuleInit '， ' onPageBuilderRegister '， 
+  /// ' onRouteTransitionsBuilderRegister '， ' onPageObserverRegister ' 
+  /// ' onRouteObserverRegister '， ' onJsonSerializerRegister '， 
+  /// ' onJsonDeserializerRegister '， ' onProtobufSerializerRegister '， 
+  /// ' onProtobufDeserializerRegister '和' onModuleAsyncInit ' 
+  ///所有模块的方法。 
   ///
   @protected
   Future<void> initModule() async {
@@ -241,34 +242,34 @@ mixin ThrioModule {
     }
   }
 
-  /// A function for registering submodules.
+  ///注册子模块的函数
   ///
   @protected
   void onModuleRegister(ModuleContext moduleContext) {}
 
-  /// A function for module initialization.
+  ///用于模块初始化的函数
   ///
   @protected
   Future<void> onModuleInit(ModuleContext moduleContext) async {}
 
-  /// Returns whether the module is loaded.
+  ///返回模块是否被加载。
   ///
   @protected
   bool isLoaded = false;
 
-  /// Called when the first page in the module is about to be pushed.
+  ///当模块中的第一页即将被推送时调用
   ///
   @protected
   Future<void> onModuleLoading(ModuleContext moduleContext) async =>
       verbose('onModuleLoading: $key');
 
-  /// Called when the last page in the module is closed.
+  ///当模块中的最后一页被关闭时调用
   ///
   @protected
   Future<void> onModuleUnloading(ModuleContext moduleContext) async =>
       verbose('onModuleUnloading: $key');
 
-  /// A function for module asynchronous initialization.
+  /// A用于模块异步初始化的函数
   ///
   @protected
   Future<void> onModuleAsyncInit(ModuleContext moduleContext) async {}

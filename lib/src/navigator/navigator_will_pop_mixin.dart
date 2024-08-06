@@ -35,6 +35,7 @@ mixin NavigatorWillPopMixin<T extends StatefulWidget> on State<T> {
   GlobalKey<NavigatorState> get internalNavigatorKey;
 
   /// Called to veto attempts by the user to dismiss the enclosing [ModalRoute].
+  /// 被调用来否决用户试图驳回封闭的[ModalRoute]。
   ///
   Future<bool> onWillPop() => Future.value(true);
 

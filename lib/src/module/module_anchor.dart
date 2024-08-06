@@ -57,16 +57,16 @@ class ModuleAnchor
         ModuleRouteBuilder,
         ModuleRouteObserver,
         ModuleRouteTransitionsBuilder {
-  /// Holds PageObserver registered by `NavigatorPageLifecycle`.
+  /// 保存由' NavigatorPageLifecycle '注册的页面观察者
   ///
   final pageLifecycleObservers =
       RegistrySetMap<String, NavigatorPageObserver>();
 
-  /// Holds PushHandler registered by `NavigatorRoutePush` .
+  /// 持有由' NavigatorRoutePush '注册的PushHandler。
   ///
   final pushHandlers = RegistrySet<NavigatorRoutePushHandle>();
 
-  /// A collection of route handlers for matching the key's pattern.
+  /// 用于匹配键模式的路由处理程序的集合。
   ///
   final routeCustomHandlers =
       RegistryOrderMap<NavigatorUrlTemplate, NavigatorRouteCustomHandler>();

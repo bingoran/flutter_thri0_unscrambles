@@ -29,9 +29,9 @@ import '../navigator/navigator_widget.dart';
 import '../navigator/thrio_navigator_implement.dart';
 
 extension ThrioBuildContext on BuildContext {
-  /// Get widget state by ancestorStateOfType method.
-  ///
-  /// Throw `Exception` if the `state.runtimeType` is not a T.
+  ///通过方法获取部件状态。 
+  /// 
+  ///如果' state.runtimeType '不是T，抛出' Exception '。 
   ///
   T stateOf<T extends State<StatefulWidget>>() {
     final state = findAncestorStateOfType<T>();
@@ -41,7 +41,7 @@ extension ThrioBuildContext on BuildContext {
     throw Exception('${state.runtimeType} is not a $T');
   }
 
-  /// Get widget state by ancestorStateOfType method.
+  ///通过方法获取部件状态。
   ///
   T? tryStateOf<T extends State<StatefulWidget>>() {
     final state = findAncestorStateOfType<T>();
@@ -51,7 +51,7 @@ extension ThrioBuildContext on BuildContext {
     return null;
   }
 
-  /// Use `shouldCanPop` to determine whether to display the back arrow.
+  /// 使用' shouldCanPop '来决定是否显示后退箭头
   ///
   /// ```dart
   /// AppBar(

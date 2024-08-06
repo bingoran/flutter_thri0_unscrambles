@@ -20,11 +20,11 @@
 // IN THE SOFTWARE.
 
 extension ThrioObject on Object {
-  /// Determine whether the current instance is a bool.
-  ///
-  /// Can be called in the following ways,
-  /// `true.isDouble`
-  /// `false.runtimeType.isDouble`
+  ///判断当前实例是否为bool类型。 
+  /// 
+  ///可以通过以下方式调用: 
+  /// ' true.isDouble ' 
+  /// ' false.runtimeType.isDouble ' 
   ///
   bool get isBool {
     if (this is Type) {
@@ -34,11 +34,11 @@ extension ThrioObject on Object {
     }
   }
 
-  /// Determine whether the current instance is an int.
-  ///
-  /// Can be called in the following ways,
-  /// `2.isInt`
-  /// `2.runtimeType.isInt`
+  ///判断当前实例是否为int类型。 
+  /// 
+  ///可以通过以下方式调用: 
+  /// ' 2. isint ' 
+  /// ' 2. runtimetype.isint ' 
   ///
   bool get isInt {
     if (this is Type) {
@@ -48,9 +48,9 @@ extension ThrioObject on Object {
     }
   }
 
-  /// Determine whether the current instance is a double.
+  /// 判断当前实例是否是双精度类型。
   ///
-  /// Can be called in the following ways,
+  /// 可以通过以下方式调用:
   /// `2.0.isDouble`
   /// `2.0.runtimeType.isDouble`
   ///
@@ -62,9 +62,9 @@ extension ThrioObject on Object {
     }
   }
 
-  /// Determine whether the current instance is an int or double.
+  /// 确定当前实例是整型还是双精度类型。
   ///
-  /// Can be called in the following ways,
+  /// 可以通过以下方式调用，
   /// `2.isNumber`
   /// `2.0.runtimeType.isNumber`
   ///
@@ -76,9 +76,9 @@ extension ThrioObject on Object {
     }
   }
 
-  /// Determine whether the current instance is a String.
+  /// 确定当前实例是否为String。
   ///
-  /// Can be called in the following ways,
+  /// 可以通过以下方式调用，
   /// `'2'.isString`
   /// `'2'.runtimeType.isString`
   ///
@@ -90,9 +90,9 @@ extension ThrioObject on Object {
     }
   }
 
-  /// Determine whether the current instance is a List.
+  /// 确定当前实例是否是List。
   ///
-  /// Can be called in the following ways,
+  /// 可以通过以下方式调用，
   /// `[ 'k', '2' ].isString`
   /// `[ 'k', '2' ].runtimeType.isString`
   ///
@@ -104,9 +104,9 @@ extension ThrioObject on Object {
     }
   }
 
-  /// Determine whether the current instance is a simple List.
+  /// 确定当前实例是否是一个简单的List。
   ///
-  /// Can be called in the following ways,
+  /// 可以通过以下方式调用，
   /// `[ 'k', '2' ].isString`
   ///
   bool get isSimpleList {
@@ -122,9 +122,9 @@ extension ThrioObject on Object {
     return true;
   }
 
-  /// Determine whether the current instance is a Map.
+  /// 确定当前实例是否是Map。
   ///
-  /// Can be called in the following ways,
+  /// 可以通过以下方式调用，
   /// `{ 'k': 2 }.isMap`
   /// `{ 'k': 2 }.runtimeType.isMap`
   ///
@@ -136,9 +136,9 @@ extension ThrioObject on Object {
     }
   }
 
-  /// Determine whether the current instance is a simple Map.
+  /// 确定当前实例是否是一个简单的Map。
   ///
-  /// Can be called in the following ways,
+  /// 可以通过以下方式调用，
   /// `{ 'k': 2 }.isMap`
   ///
   bool get isSimpleMap {
@@ -154,10 +154,10 @@ extension ThrioObject on Object {
     return true;
   }
 
-  /// Determine whether the current instance is a primitive type,
-  /// including bool, int, double, String.
+  /// 确定当前实例是否是基本类型，
+  /// 包括bool, int, double, String。
   ///
-  /// Can be called in the following ways,
+  /// 可以通过以下方式调用，
   /// `2.isPrimitiveType`
   /// `2.runtimeType.isPrimitiveType`
   ///
@@ -169,18 +169,18 @@ extension ThrioObject on Object {
     }
   }
 
-  /// Determine whether the current instance is a simple type,
-  /// including bool, int, double, String, Map, List.
+  /// 确定当前实例是否是简单类型，
+  /// 包括bool, int, double, String, Map, List。
   ///
-  /// Can be called in the following ways,
+  /// 可以通过以下方式调用，
   /// `2.isSimpleType`
   ///
   bool get isSimpleType => isPrimitiveType || isSimpleList || isSimpleMap;
 
-  /// Determine whether the current instance is a complex type,
-  /// not bool, int, double, String, Map, List.
+  /// 确定当前实例是否是复杂类型，
+  /// 不是bool, int, double, String, Map, List。
   ///
-  /// Can be called in the following ways,
+  /// 可以通过以下方式调用，
   /// `2.isComplexType`
   ///
   bool get isComplexType => !isSimpleType;

@@ -25,39 +25,39 @@ import 'package:flutter/widgets.dart';
 
 import 'navigator_route.dart';
 
-/// Signature of page builder with RouteSettings.
+/// 用routessettings签名页面生成器
 ///
 typedef NavigatorPageBuilder = Widget Function(RouteSettings settings);
 
-/// Signature of route builder with NavigatorPageBuilder and RouteSettings.
+/// 用NavigatorPageBuilder和routessettings签名路由构建器
 ///
 typedef NavigatorRouteBuilder = NavigatorRoute Function(
   NavigatorPageBuilder pageBuilder,
   RouteSettings settings,
 );
 
-/// Signature of callbacks with bool parameter.
+/// 带bool参数的回调签名
 ///
 typedef NavigatorBoolCallback = void Function(bool result);
 
-/// Signature of callbacks with int parameter.
+/// 带int形参的回调签名
 ///
 typedef NavigatorIntCallback = void Function(int index);
 
-/// Signature of callbacks with dynamic parameter.
+/// 带动态参数的回调签名
 ///
 typedef NavigatorParamsCallback = void Function(dynamic params);
 
-/// Signature of page observer callbacks with RouteSettings.
+/// 用routessettings签名页面观察者回调
 ///
 typedef NavigatorPageObserverCallback = void Function(RouteSettings settings);
 
 enum NavigatorRoutePushHandleType {
-  none, // Do not prevent routing actions from continuing
-  prevention, // Prevent routing behavior from continuing
+  none, // 不阻止路由操作继续进行
+  prevention, // 防止路由行为继续
 }
 
-/// Signature of route push handler with RouteSettings.
+/// 用routessettings签名路由推送处理程序
 ///
 typedef NavigatorRoutePushHandle = Future<NavigatorRoutePushHandleType>
     Function(
@@ -65,7 +65,9 @@ typedef NavigatorRoutePushHandle = Future<NavigatorRoutePushHandleType>
   bool animated,
 });
 
-/// Signature of push begin/return handler with url.
+
+/// 用url签名push begin/return处理程序
+/// 
 typedef NavigatorPushHandle = Future<void> Function<TParams>(
   String url, {
   TParams? params,

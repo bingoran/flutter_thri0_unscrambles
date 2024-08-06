@@ -20,23 +20,23 @@
 // IN THE SOFTWARE.
 
 extension ThrioIterable<E> on Iterable<E> {
-  /// Returns the first element.
-  ///
-  /// Return `null` if `this` is empty.
-  /// Otherwise returns the first element in the iteration order,
+  ///返回第一个元素。 
+  /// 
+  ///如果' this '为空，返回' null '
+  ///否则返回迭代顺序的第一个元素， 
   ///
   E? get firstOrNull => isEmpty ? null : first;
 
-  /// Returns the last element.
+  ///返回最后一个元素。 
+  /// 
+  ///如果' this '为空，返回' null '
+  ///否则可以遍历元素并返回最后一个 
   ///
-  /// Return `null` if `this` is empty.
-  /// Otherwise may iterate through the elements and returns the last one
-  /// seen.
   E? get lastOrNull => isEmpty ? null : last;
 
-  /// Returns the first element that satisfies the given [predicate].
-  ///
-  /// If no element satisfies [test], return `null`.
+  ///返回满足给定[谓词]的第一个元素。 
+  /// 
+  ///如果没有元素满足[test]，返回' null '
   ///
   E? firstWhereOrNull(bool Function(E it) predicate) {
     for (final it in this) {
@@ -47,9 +47,9 @@ extension ThrioIterable<E> on Iterable<E> {
     return null;
   }
 
-  /// Returns the last element that satisfies the given [predicate].
-  ///
-  /// If no element satisfies [test], return `null`.
+  ///返回最后一个满足给定[谓词]的元素。 
+  /// 
+  ///如果没有元素满足[test]，返回' null '
   ///
   E? lastWhereOrNull(bool Function(E it) predicate) {
     final reversed = toList().reversed;
