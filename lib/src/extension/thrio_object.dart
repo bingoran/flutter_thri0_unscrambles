@@ -19,6 +19,19 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
+/// object 类的拓展
+/// 1、对象是否是bool类型
+/// 2、对象是否是int类型
+/// 3、对象是否是double类型
+/// 4、对象是否是num类型
+/// 5、对象是否是String类型
+/// 6、对象是否是List类型
+/// 7、对象是否是只包含简单数据List类型
+/// 8、对象是否是Map类型
+/// 9、对象是否是只包含简单Map类型
+/// 10、对象是否是基础数据类型（bool、num、String）
+/// 11、是否是简单类型（bool、num、String、简单List、简单Map）
+/// 12、是否是负责类型，和11相反
 extension ThrioObject on Object {
   ///判断当前实例是否为bool类型。 
   /// 

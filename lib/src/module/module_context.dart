@@ -27,10 +27,12 @@ class ModuleContext {
   ModuleContext({this.entrypoint = 'main'});
 
   /// Entrypoint of current app.
+  /// 当前APP的入口点
   ///
   final String entrypoint;
 
   /// Module of module context.
+  /// 模块的上下文
   ///
   ThrioModule get module => moduleOf[this]!;
 

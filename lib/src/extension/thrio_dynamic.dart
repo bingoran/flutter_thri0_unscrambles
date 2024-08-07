@@ -19,6 +19,9 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
+
+/// 拓展了一些工具方法：主要就是从传入的dynamic params获取值
+/// 
 /// 从参数中获取值，当“键”的值没有找到时抛出ArgumentError
 ///
 T getValue<T>(dynamic params, String key) {

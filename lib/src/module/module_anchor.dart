@@ -45,6 +45,7 @@ import 'module_route_transitions_builder.dart';
 import 'module_types.dart';
 import 'thrio_module.dart';
 
+// 模块锚
 final anchor = ModuleAnchor();
 
 class ModuleAnchor
@@ -57,22 +58,20 @@ class ModuleAnchor
         ModuleRouteBuilder,
         ModuleRouteObserver,
         ModuleRouteTransitionsBuilder {
+
   /// 保存由' NavigatorPageLifecycle '注册的页面观察者
-  ///
   final pageLifecycleObservers =
       RegistrySetMap<String, NavigatorPageObserver>();
 
   /// 持有由' NavigatorRoutePush '注册的PushHandler。
-  ///
   final pushHandlers = RegistrySet<NavigatorRoutePushHandle>();
 
   /// 用于匹配键模式的路由处理程序的集合。
-  ///
   final routeCustomHandlers =
       RegistryOrderMap<NavigatorUrlTemplate, NavigatorRouteCustomHandler>();
 
   /// All registered urls.
-  ///
+  /// 所有已注册的url。
   final allUrls = <String>[];
 
   ModuleContext get rootModuleContext => modules.values.first.moduleContext;

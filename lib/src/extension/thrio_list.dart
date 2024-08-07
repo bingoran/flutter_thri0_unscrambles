@@ -21,6 +21,9 @@
 
 import 'thrio_object.dart';
 
+/// 拓展了List：
+/// 1、提供将列表页转化为只包含简单类型的列表页（bool、num、String）
+/// 2、提供了列表比较函数，验证两个列表是否相同
 extension ThrioList<E> on List<E> {
   /// Filter the elements of the current map, keeping only simple types.
   /// 过滤当前映射的元素，只保留简单类型。
@@ -40,9 +43,12 @@ extension ThrioList<E> on List<E> {
     if (other.length != length) {
       return false;
     }
+    /// 比较两个值或者对象是否是完全相同的
     if (identical(this, other)) {
       return true;
     }
+
+    /// 根据传入的比较函数验证，值是否是相同的
     for (var index = 0; index < other.length; index += 1) {
       if (!test(this[index], other[index])) {
         return false;

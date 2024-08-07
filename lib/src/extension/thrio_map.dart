@@ -21,6 +21,8 @@
 
 import 'thrio_object.dart';
 
+///map 拓展
+///提供了将Map转换为只包含简单类型的Map
 extension ThrioMap<K, V> on Map<K, V> {
   /// Filter the key/value of the current map, keeping only simple types.
   /// 过滤当前映射的键/值，只保留简单类型。

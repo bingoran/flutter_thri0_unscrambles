@@ -28,6 +28,10 @@ import '../navigator/navigator_route_settings.dart';
 import '../navigator/navigator_widget.dart';
 import '../navigator/thrio_navigator_implement.dart';
 
+/// BuildContext 的拓展
+// 主要功能： 
+// 1、提供获取组件State方法
+// 2、
 extension ThrioBuildContext on BuildContext {
   ///通过方法获取部件状态。 
   /// 
@@ -68,7 +72,7 @@ extension ThrioBuildContext on BuildContext {
   ///   )),
   /// ))
   /// ```
-  ///
+  /// 显示弹出感知小部件
   Widget showPopAwareWidget(
     Widget trueWidget, {
     Widget falseWidget = const SizedBox(),
@@ -77,7 +81,9 @@ extension ThrioBuildContext on BuildContext {
       FutureBuilder<bool>(
           future: _isInitialRoute(),
           builder: (context, snapshot) {
+            // 通过call 显示调用回调函数
             canPopResult?.call(snapshot.data != true);
+
             if (snapshot.data == true) {
               return falseWidget;
             } else {
@@ -87,6 +93,7 @@ extension ThrioBuildContext on BuildContext {
 
   Future<bool> _isInitialRoute() {
     final state = stateOf<NavigatorWidgetState>();
+    /// 拿到顶层路由
     final route = state.history.last;
     return route is NavigatorRoute
         ? ThrioNavigatorImplement.shared().isInitialRoute(

@@ -23,6 +23,7 @@ import 'dart:collection';
 import 'package:flutter/foundation.dart';
 
 // ignore: prefer_mixin
+// set
 class RegistrySet<T> with IterableMixin<T> {
   final Set<T> _sets = {};
 

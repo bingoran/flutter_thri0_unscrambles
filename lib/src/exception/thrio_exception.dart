@@ -19,6 +19,9 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
+
+/// 异常类
+/// 主要重写了toString方法，返回异常
 class ThrioException extends Exception {
   factory ThrioException([dynamic message]) => _ThrioException(message);
 }

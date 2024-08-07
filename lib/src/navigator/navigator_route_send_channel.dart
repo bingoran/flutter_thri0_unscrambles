@@ -124,7 +124,8 @@ class NavigatorRouteSendChannel {
         .invokeMethod<bool>('maybePop', arguments)
         .then((it) => it ?? false);
   }
-
+  
+  /// 检查是否是初始化完成的路由
   Future<bool> isInitialRoute({
     required String url,
     int index = 0,

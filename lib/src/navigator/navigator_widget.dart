@@ -38,6 +38,8 @@ import 'navigator_types.dart';
 import 'thrio_navigator_implement.dart';
 
 /// A widget that manages a set of child widgets with a stack discipline.
+/// 一个使用堆栈策略管理一组子部件的小部件
+/// 导航器组件
 ///
 class NavigatorWidget extends StatefulWidget {
   const NavigatorWidget({

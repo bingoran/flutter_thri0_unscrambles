@@ -30,48 +30,57 @@ typedef MethodHandler = Future<dynamic> Function([
   Map<String, dynamic>? arguments,
 ]);
 
+/// 事件名前缀
 const String _kEventNameKey = '__event_name__';
 
 class ThrioChannel {
+  // 工厂方法，初始化Channel对象
   factory ThrioChannel({String channel = '__thrio_channel__'}) =>
       ThrioChannel._(channel: channel);
 
   ThrioChannel._({required String channel}) : _channel = channel;
 
   final String _channel;
-
+  
+  // methodHandler Map
   final _methodHandlers = RegistryMap<String, MethodHandler>();
-
+  
+  /// Method Channel
   MethodChannel? _methodChannel;
-
+  /// 事件Channel
   EventChannel? _eventChannel;
 
   final _eventControllers = <String, List<StreamController<dynamic>>>{};
-
+  
+  /// channel 调用（发送）期望返回 List 类型数据
   Future<List<T>?> invokeListMethod<T>(String method,
       [final Map<String, dynamic>? arguments]) {
     _setupMethodChannelIfNeeded();
     return _methodChannel?.invokeListMethod<T>(method, arguments) ??
         Future.value();
   }
-
+  
+  ///  channel 调用（发送）期望返回 Map 类型数据
   Future<Map<K, V>?> invokeMapMethod<K, V>(String method,
       [Map<String, dynamic>? arguments]) {
     _setupMethodChannelIfNeeded();
     return _methodChannel?.invokeMapMethod<K, V>(method, arguments) ??
         Future.value();
   }
-
+  
+  ///  channel 调用（发送）期望返回 T 类型数据
   Future<T?> invokeMethod<T>(String method, [Map<String, dynamic>? arguments]) {
     _setupMethodChannelIfNeeded();
     return _methodChannel?.invokeMethod<T>(method, arguments) ?? Future.value();
   }
-
+  
+  // 注册回调
   VoidCallback registryMethodCall(String method, MethodHandler handler) {
     _setupMethodChannelIfNeeded();
     return _methodHandlers.registry(method, handler);
   }
-
+  
+  /// 发送事件channel
   void sendEvent(String name, [Map<String, dynamic>? arguments]) {
     _setupEventChannelIfNeeded();
     final controllers = _eventControllers[name];
@@ -84,12 +93,15 @@ class ThrioChannel {
       }
     }
   }
-
+  
+  /// 注册Event事件流
   Stream<Map<String, dynamic>> onEventStream(String name) {
     _setupEventChannelIfNeeded();
     final controller = StreamController<Map<String, dynamic>>();
+    // onListen 触发时机是 controller.stream.listen 注册监听器的时候会触发
+    // onCancel 触发时机是调用 controller.stream.cancel() 时候会触发
     controller
-      ..onListen = () {
+      ..onListen = () {  
         _eventControllers[name] ??= <StreamController<dynamic>>[];
         _eventControllers[name]?.add(controller);
       }
@@ -99,13 +111,15 @@ class ThrioChannel {
       };
     return controller.stream;
   }
-
+  
+  /// 如果需要，初始化MethodChannel
   void _setupMethodChannelIfNeeded() {
     if (_methodChannel != null) {
       return;
     }
     _methodChannel = MethodChannel('_method_$_channel')
       ..setMethodCallHandler((call) {
+        /// 注册监听，native 调用 flutter
         final handler = _methodHandlers[call.method];
         final args = call.arguments;
         if (handler != null) {
@@ -119,17 +133,19 @@ class ThrioChannel {
         return Future.value();
       });
   }
-
+  
+  /// 如果需要，初始化EventChannel
   void _setupEventChannelIfNeeded() {
     if (_eventChannel != null) {
       return;
     }
     _eventChannel = EventChannel('_event_$_channel')
-      ..receiveBroadcastStream()
+      ..receiveBroadcastStream() // 接收广播流
           .map<Map<String, dynamic>>((data) =>
               data is Map ? data.cast<String, dynamic>() : <String, dynamic>{})
           .where((data) => data.containsKey(_kEventNameKey))
           .listen((data) {
+        /// 处理从原生平台接收到的事件或数据
         verbose('Notify on $_channel $data');
         final eventName = data.remove(_kEventNameKey);
         final controllers = _eventControllers[eventName];

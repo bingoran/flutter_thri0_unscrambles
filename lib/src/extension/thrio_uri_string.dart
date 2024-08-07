@@ -22,9 +22,13 @@
 const int _ampersand = 0x26;
 const int _equals = 0x3d;
 
+/// 拓展Sting，主要用于处理uri
+/// 
 extension ThrioUri on String {
   static List<String> _createList() => <String>[];
+  
 
+  /// 
   Map<String, List<String>> get rawQueryParametersAll {
     if (isEmpty) {
       return const <String, List<String>>{};
@@ -66,7 +70,10 @@ extension ThrioUri on String {
     parsePair(start, equalsIndex, i);
     return Map<String, List<String>>.unmodifiable(result);
   }
-
+  
+  ///
+  /// 将string的url的参数转化成map 11==22&33=44 转化为 {11:22,33:44}
+  /// 
   Map<String, String> get rawQueryParameters => split('&').fold({}, (map, it) {
         final index = it.indexOf('=');
         if (index == -1) {

@@ -23,14 +23,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// A protocol for implementing page notifications.
+/// 实现页面通知的协议
 ///
-/// The protocol must be implemented by a UIViewController.
+/// 协议必须由UIViewController实现
 ///
 @protocol NavigatorPageNotifyProtocol <NSObject>
 
 @required
 /// Called when the page has been fully transitioned onto the screen.
+/// 当页面完全过渡到屏幕上时调用
 ///
 - (void)onNotify:(NSString *)name params:(id _Nullable)params;
 

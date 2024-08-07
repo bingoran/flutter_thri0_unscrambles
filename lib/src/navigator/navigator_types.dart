@@ -25,6 +25,8 @@ import 'package:flutter/widgets.dart';
 
 import 'navigator_route.dart';
 
+/// 该类定义了一些导航相关的一些类型
+
 /// 用routessettings签名页面生成器
 ///
 typedef NavigatorPageBuilder = Widget Function(RouteSettings settings);

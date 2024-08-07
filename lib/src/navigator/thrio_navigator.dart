@@ -194,10 +194,10 @@ abstract class ThrioNavigator {
         fromURL: fromURL,
       );
 
-  /// Send a notification to all page.
-  ///
-  /// Notifications will be triggered when the page enters the foreground.
-  /// Notifications with the same `name` will be overwritten.
+  ///向所有页面发送通知。 
+  /// 
+  ///当页面进入前台时将触发通知。 
+  ///具有相同' name '的通知将被覆盖。 
   ///
   static Future<bool> notifyAll<TParams>({
     required String name,
@@ -206,10 +206,10 @@ abstract class ThrioNavigator {
       ThrioNavigatorImplement.shared()
           .notifyAll<TParams>(name: name, params: params);
 
-  /// Send a notification to the last page with `url`.
-  ///
-  /// Notifications will be triggered when the page enters the foreground.
-  /// Notifications with the same `name` will be overwritten.
+  ///用' url '向最后一个页面发送通知。 
+  /// 
+  ///当页面进入前台时将触发通知。 
+  ///具有相同' name '的通知将被覆盖。 
   ///
   static Future<bool> notify<TParams>({
     required String url,

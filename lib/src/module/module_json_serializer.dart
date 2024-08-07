@@ -24,9 +24,12 @@ import 'package:flutter/foundation.dart';
 import '../registry/registry_map.dart';
 import 'module_types.dart';
 import 'thrio_module.dart';
-
+// on 是用来指定 mixin 可以被应用的类类型的一种语法，
+// 它限制了哪些类可以使用这个 mixin
+// 以确保 mixin 中定义的方法和属性只能被特定类型的类使用
 mixin ModuleJsonSerializer on ThrioModule {
   /// Json serializer registered in the current Module
+  /// 在当前模块中注册的Json序列化器
   ///
   final _jsonSerializers = RegistryMap<Type, JsonSerializer>();
 

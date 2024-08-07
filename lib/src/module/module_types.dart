@@ -23,17 +23,23 @@ import 'dart:async';
 
 import '../navigator/navigator_types.dart';
 
+/// 该类定义了Module处理相关的一些类型
+
 /// Signature of callbacks for json serializer.
+/// json序列化器的回调签名。
 ///
 typedef JsonSerializer = Map<String, dynamic> Function(T Function<T>() factory);
 
 /// Signature of callbacks for json deserializer.
+/// json反序列化器的回调签名。
 ///
 typedef JsonDeserializer<T> = T? Function(Map<String, dynamic> params);
 
 /// Signature of route custom handler.
+/// 路由自定义处理程序签名。
 ///
 /// Can be used to handle deeplink or route redirection.
+/// 可以用来处理深链接或路由重定向
 ///
 typedef NavigatorRouteCustomHandler = FutureOr<TPopParams?>
     Function<TParams, TPopParams>(
@@ -64,8 +70,10 @@ const navigatorResultTypeHandled = 0;
 const navigatorResultTypeNotHandled = -1;
 
 /// Signature of route action.
+/// 路由操作的签名
 ///
 /// Can be used to handle route action.
+/// 可以用来处理路由操作
 ///
 typedef NavigatorRouteAction = FutureOr<TResult?> Function<TParams, TResult>(
   String url,

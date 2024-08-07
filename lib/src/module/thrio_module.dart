@@ -49,22 +49,27 @@ mixin ThrioModule {
   ///模块化初始化函数，需要在应用初始化时调用一次
   ///
   static Future<void> init(
-    ThrioModule rootModule, {
-    String? entrypoint,
-    void Function(String)? onModuleInitStart,
-    void Function(String)? onModuleInitEnd,
+    ThrioModule rootModule, { // 业务根model,从业务根model可以遍历完整个业务线依赖的model
+    String? entrypoint, // 业务入口标识
+    void Function(String)? onModuleInitStart, // 模块初始化开始回调
+    void Function(String)? onModuleInitEnd, // 模块初始化完成回调
   }) async {
     if (anchor.modules.length == 1) {
       // 初始化方法只能调用一次
       throw ThrioException('init method can only be called once.');
     }
+
+    /// 保存初始化回调
     ThrioModule._onModuleInitStart = onModuleInitStart;
     ThrioModule._onModuleInitEnd = onModuleInitEnd;
 
+    // 初始化的时候，初始化模块上线文
     final moduleContext = entrypoint == null
         ? ModuleContext()
         : ModuleContext(entrypoint: entrypoint);
+    // 把锚存到
     moduleOf[moduleContext] = anchor;
+
     anchor
       .._moduleContext = moduleContext
       ..registerModule(rootModule, moduleContext);
@@ -90,7 +95,7 @@ mixin ThrioModule {
   static T? get<T>({String? url, String? key}) =>
       anchor.get<T>(url: url, key: key);
 
-  /// Returns true if the `url` has been registered.
+  /// 如果' url '已注册，则返回true。
   ///
   static bool contains(String url) =>
       anchor.get<NavigatorPageBuilder>(url: url) != null;
@@ -136,12 +141,11 @@ mixin ThrioModule {
   ModuleContext get moduleContext => _moduleContext;
   late ModuleContext _moduleContext;
 
-  ///调用module init start。
-  ///
+  ///调用模块 init 开始。
   static void Function(String)? get onModuleInitStart => _onModuleInitStart;
   static void Function(String)? _onModuleInitStart;
 
-  ///在模块init结束时调用。
+  ///在模块 init 结束时调用。
   static void Function(String)? get onModuleInitEnd => _onModuleInitEnd;
   static void Function(String)? _onModuleInitEnd;
 

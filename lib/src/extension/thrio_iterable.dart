@@ -19,6 +19,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
+/// thrio迭代器
 extension ThrioIterable<E> on Iterable<E> {
   ///返回第一个元素。 
   /// 
@@ -34,7 +35,7 @@ extension ThrioIterable<E> on Iterable<E> {
   ///
   E? get lastOrNull => isEmpty ? null : last;
 
-  ///返回满足给定[谓词]的第一个元素。 
+  ///返回满足给定[predicate]的第一个元素。 
   /// 
   ///如果没有元素满足[test]，返回' null '
   ///
@@ -47,7 +48,7 @@ extension ThrioIterable<E> on Iterable<E> {
     return null;
   }
 
-  ///返回最后一个满足给定[谓词]的元素。 
+  ///返回最后一个满足给定[predicate]的元素。 
   /// 
   ///如果没有元素满足[test]，返回' null '
   ///
