@@ -28,6 +28,9 @@ import 'navigator_route_settings.dart';
 import 'navigator_types.dart';
 import 'thrio_navigator_implement.dart';
 
+/// 该类主要是注册一些接收回调
+/// 接受native调用flutter的一些场景
+/// 主要场景有 push maybePop pop popTo remove replace canpop
 class NavigatorRouteReceiveChannel {
   NavigatorRouteReceiveChannel(ThrioChannel channel) : _channel = channel {
     _onPush();
@@ -40,7 +43,8 @@ class NavigatorRouteReceiveChannel {
   }
 
   final ThrioChannel _channel;
-
+  
+  /// 注册push回调
   void _onPush() =>
       _channel.registryMethodCall('push', ([final arguments]) async {
         final routeSettings = NavigatorRouteSettings.fromArguments(arguments);

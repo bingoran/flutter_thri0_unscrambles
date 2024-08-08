@@ -27,6 +27,7 @@ import 'navigator_route_settings.dart';
 import 'navigator_types.dart';
 
 /// A route managed by the `ThrioNavigatorImplement`.
+/// 由ThrioNavigatorImplement管理的路由。
 ///
 class NavigatorPageRoute extends MaterialPageRoute<bool> with NavigatorRoute {
   NavigatorPageRoute({

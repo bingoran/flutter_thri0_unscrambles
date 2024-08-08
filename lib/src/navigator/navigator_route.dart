@@ -28,6 +28,7 @@ import 'thrio_navigator_implement.dart';
 enum NavigatorRouteType { push, pop, popTo, remove, replace }
 
 /// A route managed by the `ThrioNavigatorImplement`.
+/// 由 ThrioNavigatorImplement 管理的路由
 ///
 mixin NavigatorRoute on PageRoute<bool> {
   NavigatorRouteType? routeType;

@@ -52,6 +52,7 @@ class Module
 
   @override
   void onJsonSerializerRegister(final ModuleContext moduleContext) {
+    // 给对象注册序列化器
     registerJsonSerializer<People>((i) => i<People>().toJson());
     registerJsonSerializer<House>((i) => i<House>().toJson());
     registerJsonSerializer<UserProfile>((i) => i<UserProfile>().toJson());
@@ -59,6 +60,7 @@ class Module
 
   @override
   void onJsonDeserializerRegister(final ModuleContext moduleContext) {
+    // 给对象注册反序列化器
     registerJsonDeserializer(People.fromJson);
     registerJsonDeserializer(House.fromJson);
     registerJsonDeserializer(UserProfile.fromJson);

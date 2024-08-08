@@ -51,7 +51,14 @@ class ThrioNavigatorImplement {
   ThrioNavigatorImplement._();
 
   static final ThrioNavigatorImplement _default = ThrioNavigatorImplement._();
-
+  
+  ///当行器初始化
+  ///分类注册channel
+  /// 1、初始化主channel
+  /// (1) 发送事件channel
+  /// (2) 接收事件channel
+  /// (4) 路由相关交互channel
+  /// (5) 页面相关交互channel
   Future<void> init(ModuleContext moduleContext) async {
     _moduleContext = moduleContext;
     _channel =
@@ -71,7 +78,10 @@ class ThrioNavigatorImplement {
       }
     });
     _sendChannel = NavigatorRouteSendChannel(_channel);
+    /// 该类主要是注册一些接收回调
+    /// 接受native调用flutter的一些场景
     _receiveChannel = NavigatorRouteReceiveChannel(_channel);
+    // 传入入口名称
     routeChannel = NavigatorRouteObserverChannel(moduleContext.entrypoint);
     pageChannel = NavigatorPageObserverChannel(moduleContext.entrypoint);
   }
@@ -732,6 +742,7 @@ class ThrioNavigatorImplement {
     )
         .then((index) {
       if (index > 0) {
+        // 跳转成功后的出来
         final routeName = '$index $noQueryUrl';
         final routeHistory =
             ThrioNavigatorImplement.shared().navigatorState?.history;

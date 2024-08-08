@@ -30,16 +30,20 @@ mixin ModulePageObserver on ThrioModule {
   final pageObservers = RegistrySet<NavigatorPageObserver>();
 
   /// A function for register a page observer.
+  /// 注册页面观察器的函数
   ///
   @protected
   void onPageObserverRegister(ModuleContext moduleContext) {}
 
   /// Register observers for the life cycle of all pages under
   /// the current module and submodules.
+  /// 注册对当前模块及其子模块下所有页面生命周期的观察器。
   ///
   /// Unregistry by calling the return value `VoidCallback`.
+  /// 通过调用返回的 VoidCallback 取消注册。
   ///
   /// Do not override this method.
+  /// 请勿覆盖此方法
   ///
   @protected
   VoidCallback registerPageObserver(NavigatorPageObserver pageObserver) =>

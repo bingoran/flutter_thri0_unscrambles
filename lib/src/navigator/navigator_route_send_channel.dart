@@ -31,6 +31,13 @@ import '../module/thrio_module.dart';
 import 'navigator_route_settings.dart';
 import 'thrio_navigator_implement.dart';
 
+
+/// 该类主要是实现了一些路由发送场景
+/// 主要有：
+/// push、notify、canPop、pop、popFlutter、
+/// maybePop、isInitialRoute、popTo、remove、replace
+/// lastRoute、allRoutes、setPopDisabled
+/// _serializeParams 参数序列化
 class NavigatorRouteSendChannel {
   NavigatorRouteSendChannel(ThrioChannel channel) : _channel = channel;
 
@@ -226,8 +233,11 @@ class NavigatorRouteSendChannel {
     if (params == null) {
       return null;
     }
+    /// 运行时类型（一般值就是对象类）
     final type = params.runtimeType;
+    /// 如果参数是复杂类型
     if (type != dynamic && type != Object && !params.isSimpleType) {
+      /// 将复杂数据类型转换为Map
       final serializeParams =
           ThrioModule.get<JsonSerializer>(key: type.toString())
               ?.call(<type>() => params as type); // ignore: avoid_as

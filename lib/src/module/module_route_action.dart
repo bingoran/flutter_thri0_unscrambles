@@ -27,8 +27,10 @@ import '../registry/registry_order_map.dart';
 import 'module_types.dart';
 import 'thrio_module.dart';
 
+/// 实际上是一个路由拦截器
 mixin ModuleRouteAction on ThrioModule {
   /// A collection of route action.
+  /// 存放路由action的集合
   ///
   final _routeActionHandlers =
       RegistryOrderMap<NavigatorUrlTemplate, NavigatorRouteAction>();
@@ -39,10 +41,13 @@ mixin ModuleRouteAction on ThrioModule {
   }
 
   /// Register a route action.
+  /// 注册路由action
   ///
   /// format of `template` is 'login{userName?,password}'
+  /// template 的格式是 'login{userName?,password}'
   ///
   /// Unregistry by calling the return value `VoidCallback`.
+  /// 调用返回的VoidCallback取消注册
   ///
   @protected
   VoidCallback registerRouteAction(
@@ -62,6 +67,7 @@ mixin ModuleRouteAction on ThrioModule {
   }
 
   /// A function for register a `NavigatorRouteAction` .
+  /// 注册NavigatorRouteAction函数，子类实现
   ///
   @protected
   void onRouteActionRegister(ModuleContext moduleContext) {}

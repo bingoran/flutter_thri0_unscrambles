@@ -22,7 +22,7 @@
 import 'package:flutter/foundation.dart';
 import '../extension/thrio_iterable.dart';
 
-// 有序Map
+// 注册有序Map
 class RegistryOrderMap<K, V> {
   final _list = <MapEntry<K, V>>[];
 

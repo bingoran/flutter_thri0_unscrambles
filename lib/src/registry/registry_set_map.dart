@@ -20,7 +20,7 @@
 // IN THE SOFTWARE.
 
 import 'package:flutter/foundation.dart';
-/// set map
+/// 注册set map
 class RegistrySetMap<K, V> {
   final Map<K, Set<V>> _maps = {};
 

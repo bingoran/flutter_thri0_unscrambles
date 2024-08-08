@@ -31,25 +31,33 @@ mixin ModulePageBuilder on ThrioModule {
   NavigatorPageBuilder? get pageBuilder => _pageBuilder;
 
   /// If there is a ModulePageBuilder in a module, there can be no submodules.
+  /// 如果模块中有ModulePageBuilder，则不能有子模块
+  /// 在设置pageBuilder的同时，将module对应的路径（url）缓存起来
   ///
   set pageBuilder(NavigatorPageBuilder? builder) {
     _pageBuilder = builder;
-
+    
+    // 当前页面url component
     final urlComponents = <String>['/$key'];
+    // 父模块
     var parentModule = parent;
+    // 根据当前模块，得到模块的完整路径
     while (parentModule != null && parentModule.key.isNotEmpty) {
       urlComponents.insert(0, '/${parentModule.key}');
       parentModule = parentModule.parent;
     }
     final url = (StringBuffer()..writeAll(urlComponents)).toString();
     if (builder == null) {
+       // 如果builder是空的，在全局保存的allUrls中移除这个url
       anchor.allUrls.remove(url);
     } else {
+       // 如果builder不为空，在allUrls中添加这个url
       anchor.allUrls.add(url);
     }
   }
 
   /// A function for setting a `NavigatorPageBuilder`.
+  /// 设置NavigatorPageBuilder
   ///
   @protected
   void onPageBuilderSetting(ModuleContext moduleContext) {}

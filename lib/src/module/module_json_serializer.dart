@@ -34,6 +34,7 @@ mixin ModuleJsonSerializer on ThrioModule {
   final _jsonSerializers = RegistryMap<Type, JsonSerializer>();
 
   /// Get json serializer by type string.
+  /// 通过类型返回一个json序列化器
   ///
   @protected
   JsonSerializer? getJsonSerializer(String typeString) {
@@ -45,6 +46,7 @@ mixin ModuleJsonSerializer on ThrioModule {
   }
 
   /// A function for register a json serializer.
+  /// 注册序列化器,子类实现，初始化的时候会统一调用
   ///
   @protected
   void onJsonSerializerRegister(ModuleContext moduleContext) {}

@@ -67,17 +67,21 @@ mixin ThrioModule {
     final moduleContext = entrypoint == null
         ? ModuleContext()
         : ModuleContext(entrypoint: entrypoint);
-    // 把锚存到
+    // 把锚通过Expando存到moduleContext对象上，在ModuleContext内部，通过moduleOf[this]即可获取到anchor
+    // anchor 是继承自ThrioModule，因此，在内部返回类型表示为ThrioModule
     moduleOf[moduleContext] = anchor;
-
+    
+    /// 1、绑定上下文
+    /// 2、注册app依赖的model
     anchor
       .._moduleContext = moduleContext
       ..registerModule(rootModule, moduleContext);
+    /// 模块初始化，导航器初始化
     await anchor.onModuleInit(moduleContext);
     await anchor.initModule();
   }
 
-  ///通过' T '，' url '和' key '获取实例。 
+  ///通过' T '，' url '和' key '获取实例对应的保存的 T。 
   /// 
   /// ' T '可以是' ThrioModule '， ' NavigatorPageBuilder '， ' JsonSerializer '， 
   /// ' JsonDeserializer '， ' ProtobufSerializer '， ' ProtobufDeserializer '， 
@@ -112,7 +116,8 @@ mixin ThrioModule {
   ///匹配' url '。 
   ///
   static Iterable<T> gets<T>({required String url}) => anchor.gets<T>(url);
-
+  
+  ///保存注册的所有 model
   @protected
   final modules = <String, ThrioModule>{};
 
@@ -135,10 +140,11 @@ mixin ThrioModule {
     return _url!;
   }
 
-  ///当前模块的' ModuleContext '。
+  ///当前模块的' ModuleContext '
   ///
   @protected
   ModuleContext get moduleContext => _moduleContext;
+  /// 初始化的时候设置上下文
   late ModuleContext _moduleContext;
 
   ///调用模块 init 开始。
@@ -158,14 +164,20 @@ mixin ThrioModule {
     ModuleContext moduleContext,
   ) {
     if (modules.containsKey(module.key)) {
+      // 抛出异常，具有相同key的模块已经存在
       throw ThrioException(
           'A module with the same key ${module.key} already exists');
     } else {
+      // 初始化子模块的上下文，入口名保持一致
       final submoduleContext =
           ModuleContext(entrypoint: moduleContext.entrypoint);
+      /// 将模块存储在 Expando 里
       moduleOf[submoduleContext] = module;
+      // 将model保存在modules里
       modules[module.key] = module;
+      // 在注册子模块的时候，当前model就是父model
       parentOf[module] = this;
+      // 对module进行上下文绑定，并对开始从根model的onModuleRegister方法开始注册APP依赖的所有model
       module
         .._moduleContext = submoduleContext
         ..onModuleRegister(submoduleContext);
@@ -256,7 +268,7 @@ mixin ThrioModule {
   @protected
   Future<void> onModuleInit(ModuleContext moduleContext) async {}
 
-  ///返回模块是否被加载。
+  ///返回模块是否被加载
   ///
   @protected
   bool isLoaded = false;

@@ -48,6 +48,7 @@ import 'thrio_module.dart';
 // 模块锚
 final anchor = ModuleAnchor();
 
+// 锚定类：相当于顶层类，保存一些全局状态
 class ModuleAnchor
     with
         ThrioModule,
@@ -75,11 +76,13 @@ class ModuleAnchor
   final allUrls = <String>[];
 
   ModuleContext get rootModuleContext => modules.values.first.moduleContext;
-
+  
+  /// 初始化导航类
   @override
   Future<void> onModuleInit(ModuleContext moduleContext) =>
       ThrioNavigatorImplement.shared().init(moduleContext);
-
+  
+  /// url 模块加载中（暂时没有用）
   Future<dynamic> loading(String url) async {
     final modules = _getModules(url: url);
     for (final module in modules) {
@@ -89,7 +92,8 @@ class ModuleAnchor
       }
     }
   }
-
+  
+  // 模块卸载（暂时没有用）
   Future<dynamic> unloading(Iterable<NavigatorRoute> allRoutes) async {
     final urls = allRoutes.map<String>((it) => it.settings.url).toSet();
     final notPushedUrls = allUrls.where((it) => !urls.contains(it)).toList();
@@ -129,18 +133,24 @@ class ModuleAnchor
 
   T? get<T>({String? url, String? key}) {
     var modules = <ThrioModule>[];
+    /// url 不为空的时候的处理
     if (url != null && url.isNotEmpty) {
       final typeString = T.toString();
       modules = _getModules(url: url);
       if (T == ThrioModule || T == dynamic || T == Object) {
+        // module 类型，返回最后一个，如果没有，就返回null
         return modules.isEmpty ? null : modules.last as T;
       } else if (typeString == (NavigatorPageBuilder).toString()) {
+        // 如果是 NavigatorPageBuilder 类型，url 不能为空
         if (modules.isEmpty) {
           return null;
         }
+        // 取出最后一个model
         final lastModule = modules.last;
+        // 如果Module实现了 ModulePageBuilder
         if (lastModule is ModulePageBuilder) {
           final builder = lastModule.pageBuilder;
+          // 取出pageBuilder，如果值存在，则返回
           if (builder is NavigatorPageBuilder) {
             return builder as T;
           }
@@ -149,7 +159,9 @@ class ModuleAnchor
         if (modules.isEmpty) {
           return null;
         }
+        //倒序遍历
         for (final it in modules.reversed) {
+          // 如果Module实现了ModuleRouteBuilder，则返回routeBuilder
           if (it is ModuleRouteBuilder) {
             if (it.routeBuilder != null) {
               return it.routeBuilder as T;
@@ -161,8 +173,11 @@ class ModuleAnchor
         if (modules.isEmpty) {
           return null;
         }
+        //倒序遍历
         for (final it in modules.reversed) {
+          // 如果Module实现了ModuleRouteTransitionsBuilder，则返回routeTransitionsBuilder
           if (it is ModuleRouteTransitionsBuilder) {
+            /// 是否实现了routeTransitionsBuilder
             if (it.routeTransitionsDisabled) {
               return null;
             }
@@ -174,11 +189,15 @@ class ModuleAnchor
         }
         return null;
       } else if (typeString == (NavigatorRouteAction).toString()) {
+        // 路由操作
         if (modules.isEmpty || key == null) {
           return null;
         }
+        //倒序遍历
         for (final it in modules.reversed) {
+          // 如果moudel实现了ModuleRouteAction
           if (it is ModuleRouteAction) {
+            // 通过key返回NavigatorRouteAction
             final routeAction = it.getRouteAction(key);
             if (routeAction != null) {
               return routeAction as T;
@@ -188,17 +207,20 @@ class ModuleAnchor
         return null;
       }
     }
+    
+    /// modules为空，并且url也是空的情况
     if (modules.isEmpty &&
         (url == null || url.isEmpty || !ThrioModule.contains(url))) {
       modules = _getModules();
     }
-
+    /// 如果key为空，直接返回null
     if (key == null || key.isEmpty) {
       return null;
     }
     return _get<T>(modules, key);
   }
-
+  
+  /// 返回路由观察者和页面观察者
   Iterable<T> gets<T>(String url) {
     final modules = _getModules(url: url);
     if (modules.isEmpty) {
@@ -208,15 +230,18 @@ class ModuleAnchor
     if (typeString == (NavigatorPageObserver).toString()) {
       final observers = <NavigatorPageObserver>{};
       for (final module in modules) {
+        // 如果moudel实现了ModulePageObserver
         if (module is ModulePageObserver) {
           observers.addAll(module.pageObservers);
         }
       }
       observers.addAll(pageLifecycleObservers[url]);
+      //cast 类型转换，将observers里的元素转换为T，如果转换不了就忽略
       return observers.toList().cast<T>();
     } else if (typeString == (NavigatorRouteObserver).toString()) {
       final observers = <NavigatorRouteObserver>{};
       for (final module in modules) {
+        // 如果moudel实现了ModuleRouteObserver
         if (module is ModuleRouteObserver) {
           observers.addAll(module.routeObservers);
         }
@@ -230,32 +255,45 @@ class ModuleAnchor
 
   T? remove<T>(Comparable<dynamic> key) => removeParam(key);
 
+  /// 通过url获取所有modules
+  /// 1、没传url，则返回所有moduel
+  /// 2、传了url, 则获取当前url路径下对应的所有module
   List<ThrioModule> _getModules({String? url}) {
     if (modules.isEmpty) {
       return <ThrioModule>[];
     }
+    // 根model
     final firstModule = modules.values.first;
     final allModules = [firstModule];
 
     if (url == null || url.isEmpty) {
-      // 子节点所有的 module
+      // 获取子节点所有的 module
       return allModules..addAll(_getAllModules(firstModule));
     }
 
+    ///将类似于 1/2/3 的路径分解为[1、2、3]类型数组
     final components =
         url.isEmpty ? <String>[] : url.replaceAll('/', ' ').trim().split(' ');
     final length = components.length;
     ThrioModule? module = firstModule;
     // 确定根节点，根部允许连续的空节点
     if (components.isNotEmpty) {
+      /// 拿出第一个key
       final key = components.removeAt(0);
+      // 通过key获取当前模块保存的子模块module
       var m = module.modules[key];
+      // 如果没获取到
       if (m == null) {
+        // 看看子模块有没有key为 ‘’ 的模块
         m = module.modules[''];
         while (m != null) {
+          // 添加进module
           allModules.add(m);
+          // 继续检查子模块有没有对应key的模块
           final m0 = m.modules[key];
+          // 如果没有
           if (m0 == null) {
+            // 继续看看子模块有没有key为 ‘’ 的模块
             m = m.modules[''];
           } else {
             m = m0;
@@ -284,7 +322,9 @@ class ModuleAnchor
     }
     return allModules;
   }
-
+  
+  /// 子模块的module都是通过key去存储在父模块的modules中
+  /// 这里只需递归遍历，就可以获取到所有的module类
   Iterable<ThrioModule> _getAllModules(ThrioModule module) {
     final subModules = module.modules.values;
     final allModules = [...subModules];
@@ -293,7 +333,8 @@ class ModuleAnchor
     }
     return allModules;
   }
-
+  
+  /// 获取module的所有实现了ModulePageBuilder的叶子节点
   Iterable<ThrioModule> _getAllLeafModules(ThrioModule module) {
     final subModules = module.modules.values;
     final allLeafModules = <ThrioModule>[];
@@ -308,11 +349,17 @@ class ModuleAnchor
     }
     return allLeafModules;
   }
-
+  
+  
+  // 获取序列化或者反序列化器
   T? _get<T>(List<ThrioModule> modules, String key) {
+    /// 获取泛型类型
     final typeString = T.toString();
+    ///json序列化类型
     if (typeString == (JsonSerializer).toString()) {
+      /// 倒序遍历
       for (final it in modules.reversed) {
+        // 如果model实现了序列化器
         if (it is ModuleJsonSerializer) {
           final jsonSerializer = it.getJsonSerializer(key);
           if (jsonSerializer != null) {
@@ -321,6 +368,7 @@ class ModuleAnchor
         }
       }
     } else if (typeString == (JsonDeserializer).toString()) {
+      ///json反序列化类型
       for (final it in modules.reversed) {
         if (it is ModuleJsonDeserializer) {
           final jsonDeserializer = it.getJsonDeserializer(key);

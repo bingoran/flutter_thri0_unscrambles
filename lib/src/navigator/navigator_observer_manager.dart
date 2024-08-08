@@ -28,7 +28,7 @@ import 'navigator_route.dart';
 import 'navigator_route_settings.dart';
 import 'thrio_navigator_implement.dart';
 
-/// 导航观察管理
+/// 导航观察管理类
 class NavigatorObserverManager extends NavigatorObserver {
   final observers = <NavigatorObserver>[];
 

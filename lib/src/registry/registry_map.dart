@@ -21,7 +21,7 @@
 
 import 'package:flutter/foundation.dart';
 
-/// Map
+/// 注册Map
 class RegistryMap<K, V> {
   final Map<K, V> _maps = {};
 

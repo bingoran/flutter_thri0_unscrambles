@@ -26,19 +26,23 @@ import 'thrio_module.dart';
 
 mixin ModuleJsonable on ThrioModule {
   /// Get jsonable by type string.
+  /// 根据类型返回jsonable
   ///
   @protected
   Jsonable<dynamic>? getJsonable(String typeString) =>
       jsonableRegistry.getByTypeName(typeString);
 
   /// A function for register a jsonable.
+  /// 一个用于注册jsonable的函数。
   ///
   @protected
   void onJsonableRegister(ModuleContext moduleContext) {}
 
   /// Register a jsonable.
+  /// 注册jsonable
   ///
   /// Unregistry by calling the return value `VoidCallback`.
+  /// 通过调用返回值' VoidCallback '取消注册
   ///
   @protected
   VoidCallback registerJsonable<T>(Jsonable<dynamic> jsonable) =>

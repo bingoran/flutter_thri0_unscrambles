@@ -30,6 +30,7 @@ import 'thrio_module.dart';
 
 mixin ModuleParamScheme on ThrioModule {
   /// Param schemes registered in the current Module
+  /// 当前模块中注册的参数方案
   ///
   final _paramSchemes = RegistryMap<Comparable<dynamic>, Type>();
 
@@ -49,6 +50,7 @@ mixin ModuleParamScheme on ThrioModule {
       <Comparable<dynamic>, Set<StreamController<dynamic>>>{};
 
   /// Subscribe to a series of param by `key`.
+  /// 通过' key '订阅一系列参数。
   ///
   @protected
   Stream<T?>? onParam<T>(Comparable<dynamic> key, {T? initialValue}) {
@@ -74,12 +76,15 @@ mixin ModuleParamScheme on ThrioModule {
   final _params = <Comparable<dynamic>, dynamic>{};
 
   /// Gets param by `key` & `T`.
+  /// 获取键为 key 且类型为 T 的参数
   ///
   /// Throw `ThrioException` if `T` is not matched param scheme.
+  /// 如果 T 不匹配参数方案，则抛出 ThrioException
   ///
   @protected
   T? getParam<T>(Comparable<dynamic> key) {
     // Anchor module does not need to get param scheme.
+    // 锚定模块不需要返回参数scheme
     if (this == anchor) {
       return _params[key] as T?;
     }
@@ -98,12 +103,15 @@ mixin ModuleParamScheme on ThrioModule {
   }
 
   /// Sets param with `key` & `value`.
+  /// 使用 key 和 value 设置参数。
   ///
   /// Return `false` if param scheme is not registered.
+  /// 如果参数方案未注册，则返回 false。
   ///
   @protected
   bool setParam<T>(Comparable<dynamic> key, T value) {
     // Anchor module does not need to set param scheme.
+    // 锚定模块不需要设置参数scheme
     if (this == anchor) {
       final oldValue = _params[key];
       if (oldValue != null && oldValue.runtimeType != value.runtimeType) {
@@ -146,11 +154,14 @@ mixin ModuleParamScheme on ThrioModule {
   }
 
   /// Remove param by `key` & `T`, if exists, return the `value`.
+  /// 如果存在，通过 key 和 T 移除参数，并返回 value。
   ///
   /// Throw `ThrioException` if `T` is not matched param scheme.
+  /// 如果 T 不匹配参数scheme，则抛出 ThrioException。
   ///
   T? removeParam<T>(Comparable<dynamic> key) {
     // Anchor module does not need to get param scheme.
+    // 锚定模块不需要获取参数scheme
     if (this == anchor) {
       return _params.remove(key) as T?;
     }
@@ -169,22 +180,29 @@ mixin ModuleParamScheme on ThrioModule {
   }
 
   /// A function for register a param scheme.
+  /// 注册 param scheme，子module实现
   ///
   @protected
   void onParamSchemeRegister(ModuleContext moduleContext) {}
 
   /// Register a param scheme for the module.
+  /// 为模块注册一个参数方案
   ///
   /// `T` can be optional.
+  /// T 可以是可选的。
   ///
   /// Unregistry by calling the return value `VoidCallback`.
+  /// 通过调用返回的 VoidCallback 取消注册
+  /// Comparable<dynamic> 可比较类型的数据类型
   ///
   @protected
   VoidCallback registerParamScheme<T>(Comparable<dynamic> key) {
+    /// 不能重复注册
     if (_paramSchemes.keys.contains(key)) {
       throw ThrioException(
           '$T is already registered for key ${_paramSchemes[key]}');
     }
+    ///如果没有传递T，则默认是dynamic类型
     final callback = _paramSchemes.registry(key, T);
     return () {
       callback();

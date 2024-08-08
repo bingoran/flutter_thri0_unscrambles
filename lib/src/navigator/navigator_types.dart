@@ -59,7 +59,7 @@ enum NavigatorRoutePushHandleType {
   prevention, // 防止路由行为继续
 }
 
-/// 用routessettings签名路由推送处理程序
+/// 用routessettings签名路由pus处理
 ///
 typedef NavigatorRoutePushHandle = Future<NavigatorRoutePushHandleType>
     Function(

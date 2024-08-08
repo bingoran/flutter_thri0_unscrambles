@@ -29,6 +29,7 @@ mixin ModuleRouteBuilder on ThrioModule {
   NavigatorRouteBuilder? routeBuilder;
 
   /// A function for setting a `NavigatorRouteBuilder` .
+  /// 设置 NavigatorRouteBuilder，在子内中
   ///
   @protected
   void onRouteBuilderSetting(ModuleContext moduleContext) {}
