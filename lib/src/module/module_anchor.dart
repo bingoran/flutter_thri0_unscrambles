@@ -67,7 +67,7 @@ class ModuleAnchor
   /// 持有由' NavigatorRoutePush '注册的PushHandler。
   final pushHandlers = RegistrySet<NavigatorRoutePushHandle>();
 
-  /// 用于匹配键模式的路由处理程序的集合。
+  /// 自定义路由的处理集合
   final routeCustomHandlers =
       RegistryOrderMap<NavigatorUrlTemplate, NavigatorRouteCustomHandler>();
 

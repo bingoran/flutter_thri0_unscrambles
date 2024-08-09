@@ -27,6 +27,7 @@ import 'navigator_home.dart';
 import 'navigator_page_route.dart';
 import 'thrio_navigator_implement.dart';
 
+///thrio 的壳
 class NavigatorMaterialApp extends MaterialApp {
   NavigatorMaterialApp({
     super.navigatorKey,
@@ -76,6 +77,7 @@ class NavigatorMaterialApp extends MaterialApp {
   final Widget? transitionPage;
 
   /// Get moduleContext of root module.
+  /// 根模块modlue context
   ///
   ModuleContext get moduleContext => anchor.rootModuleContext;
 }

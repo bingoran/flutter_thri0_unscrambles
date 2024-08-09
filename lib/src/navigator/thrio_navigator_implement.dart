@@ -45,6 +45,7 @@ import 'navigator_route_settings.dart';
 import 'navigator_types.dart';
 import 'navigator_widget.dart';
 
+/// Thrio 导航实现类
 class ThrioNavigatorImplement {
   factory ThrioNavigatorImplement.shared() => _default;
 
@@ -63,6 +64,7 @@ class ThrioNavigatorImplement {
     _moduleContext = moduleContext;
     _channel =
         ThrioChannel(channel: '__thrio_app__${moduleContext.entrypoint}');
+    /// 回调监听，native调用 __thrio_module_context__XXX channel的 set 后触发
     ThrioChannel(channel: '__thrio_module_context__${moduleContext.entrypoint}')
         .registryMethodCall('set', ([final arguments]) async {
       if (arguments == null || arguments.isEmpty) {
@@ -81,11 +83,13 @@ class ThrioNavigatorImplement {
     /// 该类主要是注册一些接收回调
     /// 接受native调用flutter的一些场景
     _receiveChannel = NavigatorRouteReceiveChannel(_channel);
-    // 传入入口名称
+    // 用于路由行为观察的channel类，传入入口名称
     routeChannel = NavigatorRouteObserverChannel(moduleContext.entrypoint);
+    // 用于页面行为观察的channel类，参数为入口名称
     pageChannel = NavigatorPageObserverChannel(moduleContext.entrypoint);
   }
-
+  
+  //核心函数：对外提供builder，所有当前展示页面的出口
   TransitionBuilder get builder => (context, child) {
         Navigator? navigator;
         if (child is Navigator) {
@@ -114,33 +118,41 @@ class ThrioNavigatorImplement {
           child: Text('child for builder must be Navigator'),
         );
       };
-
+  
+  //module 上下文
   late final ModuleContext _moduleContext;
-
+  
+  //一个记录当前状态的全局状态key
   late final _stateKey = GlobalKey<NavigatorWidgetState>();
-
+  
+  // 当前导航状态
   NavigatorWidgetState? get navigatorState => _stateKey.currentState;
-
+  
+  //push 开始操作
   final _pushBeginHandlers = RegistrySet<NavigatorPushHandle>();
-
+  //push 返回操作
   final _pushReturnHandlers = RegistrySet<NavigatorPushHandle>();
-
+  
+  //pop结果
   final poppedResults = <String, NavigatorParamsCallback>{};
-
+  
+  //当前pop的路由数组
   List<NavigatorRoute> get currentPopRoutes => observerManager.currentPopRoutes;
 
   late final ThrioChannel _channel;
-
+  //路由发送channel
   late final NavigatorRouteSendChannel _sendChannel;
-
+  //路由接收channel
   late final NavigatorRouteReceiveChannel _receiveChannel;
-
+  //路由阶段观察channel
   late final NavigatorRouteObserverChannel routeChannel;
-
+  //页面生命周期观察channel
   late final NavigatorPageObserverChannel pageChannel;
-
+  
+  // 观察关联
   late final observerManager = NavigatorObserverManager();
 
+  // 异步任务队列
   final _taskQueue = AsyncTaskQueue();
 
   void ready() {
@@ -155,13 +167,19 @@ class ThrioNavigatorImplement {
 
     _channel.invokeMethod<bool>('ready');
   }
-
+  
+  ///注册一个在push之前调用的handle
   VoidCallback registerPushBeginHandle(NavigatorPushHandle handle) =>
       _pushBeginHandlers.registry(handle);
-
+  /// 在push返回之前注册一个called
   VoidCallback registerPushReturnHandle(NavigatorPushHandle handle) =>
       _pushReturnHandlers.registry(handle);
-
+  
+  /// 将页面推送到导航堆栈。
+  ///
+  /// 如果' url '存在native page构建器，打开native页面;
+  /// 否则打开flutter页面
+  ///
   Future<TPopParams?> push<TParams, TPopParams>({
     required String url,
     TParams? params,
@@ -170,6 +188,7 @@ class ThrioNavigatorImplement {
     String? fromURL,
     String? innerURL,
   }) async {
+    // 执行push前函数
     await _onPushBeginHandle(
       url: url,
       params: params,
@@ -178,7 +197,7 @@ class ThrioNavigatorImplement {
     );
 
     final completer = Completer<TPopParams?>();
-
+    // 先处理自定义路由操作
     final handled = await _pushToHandler(
       url: url,
       params: params,
@@ -188,7 +207,9 @@ class ThrioNavigatorImplement {
       fromURL: fromURL,
       innerURL: innerURL,
     );
+    // 当前module没有自定义路由，未处理
     if (!handled) {
+      //执行常规 push 页面
       Future<void> pushFuture() {
         final resultCompleter = Completer();
         _pushToNative<TParams, TPopParams>(
@@ -204,13 +225,14 @@ class ThrioNavigatorImplement {
         });
         return resultCompleter.future;
       }
-
+      //将路由操作放入异步堆栈执行
       unawaited(_taskQueue.add(pushFuture));
     }
 
     return completer.future;
   }
-
+  
+  /// push 之前执行的函数
   Future<void> _onPushBeginHandle<TParams>({
     required String url,
     TParams? params,
@@ -221,7 +243,8 @@ class ThrioNavigatorImplement {
       await handle(url, params: params, fromURL: fromURL, innerURL: innerURL);
     }
   }
-
+  
+  // push 返回之前执行的函数
   Future<void> _onPushReturnHandle<TParams>({
     required String url,
     TParams? params,
@@ -232,7 +255,8 @@ class ThrioNavigatorImplement {
       await handle(url, params: params, fromURL: fromURL, innerURL: innerURL);
     }
   }
-
+  
+  // 自定义路由处理
   Future<TPopParams?> _onRouteCustomHandle<TParams, TPopParams>({
     required NavigatorRouteCustomHandler handler,
     required Uri uri,
@@ -245,6 +269,7 @@ class ThrioNavigatorImplement {
     final queryParametersAll = handler.queryParamsDecoded
         ? uri.queryParametersAll
         : uri.query.rawQueryParametersAll;
+    // 执行这个handle, 一般都是用于重定向到某个页面
     return handler<TParams, TPopParams>(
       uri.toString(),
       queryParametersAll,
@@ -541,7 +566,8 @@ class ThrioNavigatorImplement {
     if (route == null) {
       result?.call(0);
     }
-
+    
+    // 
     final handled = await _pushToHandler(
       url: url,
       params: params,
@@ -556,6 +582,8 @@ class ThrioNavigatorImplement {
       fromURL: fromURL,
       innerURL: innerURL,
     );
+
+    // 自定义路由未处理
     if (!handled) {
       Future<void> pushFuture() async {
         final resultCompleter = Completer();
@@ -660,7 +688,8 @@ class ThrioNavigatorImplement {
 
     return completer.future;
   }
-
+  
+  // push 处理
   Future<bool> _pushToHandler<TParams, TPopParams>({
     required String url,
     TParams? params,
@@ -672,29 +701,38 @@ class ThrioNavigatorImplement {
   }) async {
     var handled = false;
     final uri = Uri.parse(url);
+    // 匹配自定义路由处理（自定义路由一般都是用于重定向场景）
     var handler =
         anchor.routeCustomHandlers.lastWhereOrNull((it) => it.match(uri));
+    // 找到了自定义处理的
     if (handler != null) {
+      // 倒序执行
       for (var i = anchor.routeCustomHandlers.length - 1; i >= 0; i--) {
         final entry = anchor.routeCustomHandlers.elementAt(i);
+        // 未匹配上，则继续匹配
         if (!entry.key.match(uri)) {
           continue;
         }
+        // 处理函数
         handler = entry.value;
         var index = 0;
+        // 执行自定义路由的处理
         final pr = await _onRouteCustomHandle<TParams, TPopParams>(
           handler: handler,
           uri: uri,
           params: params,
           animated: animated,
           result: (idx) {
+            // 如果idx 返回-1不需要处理，也就是说不需要拦截
             index = idx;
             result?.call(index);
           },
           fromURL: fromURL,
           innerURL: innerURL,
         );
+        
         if (index != navigatorResultTypeNotHandled) {
+          // 标记处理完，执行completer，返回参数
           handled = true;
           poppedResult(completer, pr);
           break;
@@ -703,7 +741,8 @@ class ThrioNavigatorImplement {
     }
     return handled;
   }
-
+  
+  // 执行native路由操作
   Future<int> _pushToNative<TParams, TPopParams>({
     required String url,
     TParams? params,
@@ -712,18 +751,26 @@ class ThrioNavigatorImplement {
     String? fromURL,
     String? innerURL,
   }) {
+    // 匹配？号，如果没匹配到，则返回-1
     final qidx = url.indexOf('?');
+    // 参数
     final ps = params ?? <String, dynamic>{};
     var noQueryUrl = url;
+    // url携带参数
     if (qidx != -1) {
       if (ps is Map) {
+        // 将参数转换成Map，统一添加到params中
         final query = url.substring(qidx);
         final qps = query.rawQueryParameters;
         ps.addAll(qps);
       }
+      // 去掉？后的参数，留下的就是常规参数
       noQueryUrl = url.substring(0, qidx);
     }
+
+    // completer执行complete的时候出发
     unawaited(completer.future.then((value) {
+      // 执行push返回之前的处理
       _onPushReturnHandle(
         url: url,
         params: params,
@@ -731,7 +778,8 @@ class ThrioNavigatorImplement {
         innerURL: innerURL,
       );
     }));
-
+    
+    /// 调用channel，native 侧处理
     return _sendChannel
         .push(
       url: noQueryUrl,
@@ -741,14 +789,16 @@ class ThrioNavigatorImplement {
       innerURL: innerURL,
     )
         .then((index) {
+      // 一般index都是以1开始累加，如果大于0则能表示执行成功
       if (index > 0) {
-        // 跳转成功后的出来
+        // 跳转成功后的处理
         final routeName = '$index $noQueryUrl';
         final routeHistory =
             ThrioNavigatorImplement.shared().navigatorState?.history;
         final route = routeHistory
             ?.lastWhereOrNull((it) => it.settings.name == routeName);
         if (route != null && route is NavigatorRoute) {
+          // 设置route 的poppedResult处理回调
           route.poppedResult =
               (params) => poppedResult<TPopParams>(completer, params);
         } else {
@@ -760,7 +810,8 @@ class ThrioNavigatorImplement {
       return index;
     });
   }
-
+  
+  // pop 结果：主要是校验参数
   void poppedResult<TPopParams>(
     Completer<TPopParams?> completer,
     dynamic params,
@@ -1255,16 +1306,18 @@ class ThrioNavigatorImplement {
     int index = 0,
   }) =>
       _receiveChannel.onPageNotify(name: name, url: url, index: index);
-
+  
+  // 热重载
   void hotRestart() {
     _channel.invokeMethod<bool>('hotRestart');
   }
-
+  
+  // 反序列化参数
   dynamic _deserializeParams(dynamic params) {
     if (params == null) {
       return null;
     }
-
+    // 只提取__thrio_TParams__里的数据
     if (params is Map && params.containsKey('__thrio_TParams__')) {
       // ignore: avoid_as
       final typeString = params['__thrio_TParams__'] as String;

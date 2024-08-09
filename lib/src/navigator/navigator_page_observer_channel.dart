@@ -30,6 +30,7 @@ import 'navigator_route_settings.dart';
 typedef NavigatorPageObserverCallback = void Function(
     NavigatorPageObserver observer, RouteSettings settings);
 
+/// 页面生命周期观察channel类
 class NavigatorPageObserverChannel {
   NavigatorPageObserverChannel(String entrypoint)
       : _channel = ThrioChannel(channel: '__thrio_page_channel__$entrypoint') {
@@ -45,19 +46,22 @@ class NavigatorPageObserverChannel {
   }
 
   final ThrioChannel _channel;
-
+  
+  /// 页面即将显示
   void willAppear(RouteSettings routeSettings, NavigatorRouteType routeType) {
     final arguments = routeSettings.toArgumentsWithoutParams();
     arguments['routeType'] = routeType.toString().split('.').last;
     _channel.invokeMethod<dynamic>('willAppear', arguments);
   }
-
+  
+  /// 页面显示完成
   void didAppear(RouteSettings routeSettings, NavigatorRouteType routeType) {
     final arguments = routeSettings.toArgumentsWithoutParams();
     arguments['routeType'] = routeType.toString().split('.').last;
     _channel.invokeMethod<dynamic>('didAppear', arguments);
   }
-
+  
+  /// 页面即将掩藏
   void willDisappear(
     RouteSettings routeSettings,
     NavigatorRouteType routeType,
@@ -66,19 +70,23 @@ class NavigatorPageObserverChannel {
     arguments['routeType'] = routeType.toString().split('.').last;
     _channel.invokeMethod<dynamic>('willDisappear', arguments);
   }
-
+  
+  /// 页面已经掩藏
   void didDisappear(RouteSettings routeSettings, NavigatorRouteType routeType) {
     final arguments = routeSettings.toArgumentsWithoutParams();
     arguments['routeType'] = routeType.toString().split('.').last;
     _channel.invokeMethod<dynamic>('didDisappear', arguments);
   }
-
+  
+  /// 接收回调
   void _on(String method, NavigatorPageObserverCallback callback) =>
       _channel.registryMethodCall(method, ([final arguments]) {
         final routeSettings = NavigatorRouteSettings.fromArguments(arguments);
         if (routeSettings != null) {
+          // 获取所有实现了NavigatorPageObserver协议的module
           final observers =
               ThrioModule.gets<NavigatorPageObserver>(url: routeSettings.url);
+          // 过滤出要调用的module
           for (final observer in observers) {
             if (observer.settings == null ||
                 observer.settings?.name == routeSettings.name) {

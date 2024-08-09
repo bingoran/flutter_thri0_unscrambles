@@ -28,13 +28,16 @@ import 'navigator_route_observer.dart';
 import 'navigator_route_settings.dart';
 import 'thrio_navigator_implement.dart';
 
+/// 路由行为的回调
 typedef NavigatorRouteObserverCallback = void Function(
   NavigatorRouteObserver observer,
   RouteSettings settings,
 );
 
+/// 路由观察的channel类
 class NavigatorRouteObserverChannel with NavigatorRouteObserver {
   NavigatorRouteObserverChannel(String entrypoint)
+      // channel 初始化，导航行为的channel名为__thrio_route_channel__
       : _channel = ThrioChannel(channel: '__thrio_route_channel__$entrypoint') {
     _on('didPush',
         (observer, routeSettings) => observer.didPush(routeSettings));

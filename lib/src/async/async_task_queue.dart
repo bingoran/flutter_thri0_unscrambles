@@ -49,7 +49,7 @@ class AsyncTaskQueue {
         f.timeout(timeLimit, onTimeout: () => complete(null));
       }
     } else {
-      // 如果前面有任务，则执行前面取出来的任务
+      // 如果前面有任务，则等前面的任务执行完后，再执行当前任务
       last.future.whenComplete(() {
         final f = task().then(complete).catchError((_) => complete(null));
         if (timeLimit != null) {

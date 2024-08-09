@@ -28,15 +28,18 @@ import 'navigator_material_app.dart';
 import 'navigator_route_settings.dart';
 
 mixin NavigatorPage {
+  /// 模块上下文
   ModuleContext get moduleContext;
-
+  /// 路由对象
   RouteSettings get settings;
 
   /// Get parameter from params, throw ArgumentError when`key`'s value  not found .
+  /// 将参数从 params 中获取，如果 key 的值未找到，则抛出 ArgumentError
   ///
   T getParam<T>(String key) => getValue(settings.params, key);
 
   /// Get parameter from params, return `defaultValue` when`key`'s value  not found .
+  /// 从 params 中获取参数，如果 key 的值未找到，则返回 defaultValue
   ///
   T getParamOrDefault<T>(String key, T defaultValue) =>
       getValueOrDefault(settings.params, key, defaultValue);

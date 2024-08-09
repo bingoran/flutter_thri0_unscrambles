@@ -25,23 +25,29 @@ import 'navigator_route_settings.dart';
 import 'navigator_types.dart';
 import 'thrio_navigator_implement.dart';
 
+// 定义了5中路由类型
 enum NavigatorRouteType { push, pop, popTo, remove, replace }
 
 /// A route managed by the `ThrioNavigatorImplement`.
-/// 由 ThrioNavigatorImplement 管理的路由
+/// 通过 ThrioNavigatorImplement 关联的路由管理器
+/// 主要功能是提供路由settings，以及路由拦截相关操作
 ///
 mixin NavigatorRoute on PageRoute<bool> {
+  /// 路由状态
   NavigatorRouteType? routeType;
 
   @override
   RouteSettings get settings;
-
+  
+  //pop回调
   NavigatorParamsCallback? poppedResult;
-
+  
+  /// 保存pop禁用状态
   final _popDisableds = <String, bool>{};
-
+  /// 保存
   final _popDisabledFutures = <String, Future<dynamic>>{};
-
+  
+  // 设置pop是否禁用
   @protected
   void setPopDisabled({bool disabled = false}) {
     if (_popDisableds[settings.name!] == disabled) {
@@ -63,7 +69,8 @@ mixin NavigatorRoute on PageRoute<bool> {
       }
     });
   }
-
+  
+  // 清空
   @protected
   void clearPopDisabledFutures() {
     _popDisabledFutures.clear();

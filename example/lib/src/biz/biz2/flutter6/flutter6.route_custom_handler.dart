@@ -21,6 +21,7 @@ Future<void> on$RouteCustomHandlerRegister(
         innerURL,
       }) =>
           'good' as TPopParams);
+          
   registerFunc(
       'justascheme://open/biz2/home{tab?}',
       <TParams, TPopParams>(

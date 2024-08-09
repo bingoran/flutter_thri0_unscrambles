@@ -23,8 +23,10 @@ import 'package:flutter/material.dart';
 
 import '../exception/thrio_exception.dart';
 
+// url处理模版，将标准路由路径，提取出scheme、host、path、params
 @immutable
 class NavigatorUrlTemplate {
+  // 将传入的template提取出 scheme、host、path、requiredParamKeys
   NavigatorUrlTemplate({required this.template}) {
     var tem = template;
     final paramsStr = RegExp(r'\{(.*?)\}').stringMatch(tem);

@@ -171,11 +171,11 @@ mixin ThrioModule {
       // 初始化子模块的上下文，入口名保持一致
       final submoduleContext =
           ModuleContext(entrypoint: moduleContext.entrypoint);
-      /// 将模块存储在 Expando 里
+      /// 将模块存储在 Expando 里, 在context内部，通过moduleOf[this]就可以获取到这个moudule
       moduleOf[submoduleContext] = module;
       // 将model保存在modules里
       modules[module.key] = module;
-      // 在注册子模块的时候，当前model就是父model
+      // 在注册子模块的时候，当前model就是父model，在model内部， 通过 parentOf[this] 就可以获取父moduel
       parentOf[module] = this;
       // 对module进行上下文绑定，并对开始从根model的onModuleRegister方法开始注册APP依赖的所有model
       module

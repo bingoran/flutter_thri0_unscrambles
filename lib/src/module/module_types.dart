@@ -52,11 +52,13 @@ typedef NavigatorRouteCustomHandler = FutureOr<TPopParams?>
   String? innerURL,
 });
 
+//存储查询参数解码状态
 final _queryParamsDecodedOf = Expando<bool>();
 
 extension NavigatorRouteCustomHandlerX on NavigatorRouteCustomHandler {
+  //查询参数解码
   bool get queryParamsDecoded => _queryParamsDecodedOf[this] ?? true;
-
+  //设置查询参数解码
   set queryParamsDecoded(bool value) => _queryParamsDecodedOf[this] = value;
 }
 
@@ -66,7 +68,9 @@ typedef RegisterRouteCustomHandlerFunc = void Function(
   bool queryParamsDecoded,
 });
 
+// 导航结果为处理类型
 const navigatorResultTypeHandled = 0;
+// 导航结果为未处理类型
 const navigatorResultTypeNotHandled = -1;
 
 /// Signature of route action.

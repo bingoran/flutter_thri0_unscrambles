@@ -24,6 +24,7 @@ import 'package:flutter/widgets.dart';
 import 'thrio_navigator.dart';
 
 /// An interface for observing the navigation behavior of a [ThrioNavigator].
+/// 用于观察[ThrioNavigator]的导航行为的接口
 ///
 mixin NavigatorRouteObserver {
   /// The [ThrioNavigator] pushed `route`.

@@ -40,6 +40,7 @@ class ModuleContext {
   ///
   ThrioModule get module => moduleOf[this]!;
 
+  /// 获取context 中存储的参数
   /// Get param `value` of `key`.
   /// 通过参数“key”获取“value”。
   ///

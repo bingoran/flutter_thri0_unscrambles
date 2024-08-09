@@ -24,6 +24,10 @@ import 'package:flutter/services.dart';
 
 import 'navigator_hot_restart_button.dart';
 
+/// 
+/// 提供的默认，导航过渡页，可以自己自定义提供
+/// 
+/// 
 class NavigatorHome extends StatefulWidget {
   const NavigatorHome({super.key, this.showRestartButton = false});
 
@@ -48,6 +52,7 @@ class _NavigatorHomeState extends State<NavigatorHome> {
               width: 60, height: 60, child: CircularProgressIndicator()),
           const SizedBox(width: 60, height: 60),
           if (widget.showRestartButton)
+            /// 热重载按钮
             const SizedBox(
                 width: 200, height: 48, child: NavigatorHotRestartButton()),
         ]))),

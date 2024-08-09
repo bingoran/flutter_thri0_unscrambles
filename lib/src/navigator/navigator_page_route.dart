@@ -48,7 +48,8 @@ class NavigatorPageRoute extends MaterialPageRoute<bool> with NavigatorRoute {
     setPopDisabled();
     super.removeScopedWillPopCallback(callback);
   }
-
+  
+  // 路由跳转过渡动画实现
   @override
   Widget buildTransitions(
     BuildContext context,
@@ -56,15 +57,21 @@ class NavigatorPageRoute extends MaterialPageRoute<bool> with NavigatorRoute {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
+    // 是否嵌套
     if (settings.isNested) {
+      // 不需要动画，直接返回
       if (!settings.animated) {
         return child;
       }
+
+      // 获取到自定义过渡动画的Builder
       final builder =
           ThrioModule.get<RouteTransitionsBuilder>(url: settings.url);
       if (builder != null) {
+        // 执行这个过渡动画
         return builder(context, animation, secondaryAnimation, child);
       }
+      // 走默认的效果
       return super.buildTransitions(
         context,
         animation,

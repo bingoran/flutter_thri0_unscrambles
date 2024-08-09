@@ -185,7 +185,8 @@ class NavigatorRouteReceiveChannel {
             }) ??
             false;
       });
-
+  
+  // 页面通知
   Stream<dynamic> onPageNotify({
     required String name,
     String? url,
@@ -198,7 +199,8 @@ class NavigatorRouteReceiveChannel {
               (url == null || url.isEmpty || arguments.containsValue(url)) &&
               (index == 0 || arguments.containsValue(index)))
           .map((arguments) => arguments['params']);
-
+  
+  // 反序列化参数，根据url
   dynamic _deserializeParams(String url, dynamic params) {
     if (params == null) {
       return null;

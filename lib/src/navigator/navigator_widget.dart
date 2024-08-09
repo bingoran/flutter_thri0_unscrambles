@@ -38,7 +38,7 @@ import 'navigator_types.dart';
 import 'thrio_navigator_implement.dart';
 
 /// A widget that manages a set of child widgets with a stack discipline.
-/// 一个使用堆栈策略管理一组子部件的小部件
+/// 一个以栈结构管理一组子小部件的小部件
 /// 导航器组件
 ///
 class NavigatorWidget extends StatefulWidget {
@@ -61,7 +61,8 @@ class NavigatorWidget extends StatefulWidget {
 
 class NavigatorWidgetState extends State<NavigatorWidget> {
   final _style = const SystemUiOverlayStyle();
-
+  
+  /// 当前路由栈
   List<Route<dynamic>> get history => widget._observerManager.pageRoutes;
 
   /// 还无法实现animated=false
@@ -73,7 +74,8 @@ class NavigatorWidgetState extends State<NavigatorWidget> {
     if (navigatorState == null) {
       return false;
     }
-
+    
+    // 获取即将要展示的页面
     final pageBuilder =
         ThrioModule.get<NavigatorPageBuilder>(url: settings.url);
     if (pageBuilder == null) {

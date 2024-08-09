@@ -33,12 +33,16 @@ final _urlOf = <String, String?>{};
 
 final _indexOf = <String, int?>{};
 
+/// 导航 RouteSettings 
 extension NavigatorRouteSettings on RouteSettings {
+  /// 一个很大的int类型的数
   static int _fakeIndex = 0x7fffffff;
-
+  
+  /// 提供一个空的RouteSettings
   static RouteSettings get nullSettings => const RouteSettings(name: '');
 
   /// Construct RouteSettings with url, index, params.
+  /// RouteSettings构造函数，入参包括url, index, params.
   ///
   static RouteSettings settingsWith({
     required String url,
@@ -53,6 +57,7 @@ extension NavigatorRouteSettings on RouteSettings {
   }
 
   /// Converting arguments to route settings.
+  /// 将参数转换为route settings
   ///
   static RouteSettings? fromArguments(Map<String, dynamic>? arguments) {
     if ((arguments != null && arguments.isNotEmpty) &&
@@ -94,7 +99,8 @@ extension NavigatorRouteSettings on RouteSettings {
     }
     return null;
   }
-
+  
+  /// 新的转换函数，arguments 只包含isNested、animated
   static RouteSettings? fromNewUrlArguments(
     final Map<String, dynamic>? arguments,
   ) {
@@ -108,13 +114,14 @@ extension NavigatorRouteSettings on RouteSettings {
       final isNested = arguments['isNested'] == true;
       final animated = arguments['animated'] == true;
       return RouteSettings(name: '$index $url', arguments: <String, dynamic>{
-        'isNested': isNested,
+        'isNested': isNested, // 是否是嵌套路由
         'animated': animated,
       });
     }
     return null;
   }
-
+  
+  // 将 arguments 转换为 params
   Map<String, dynamic> toArgumentsWithoutParams() {
     final args = <String, dynamic>{
       'url': url,
@@ -179,7 +186,8 @@ extension NavigatorRouteSettings on RouteSettings {
     }
     _isSelectedOf[name!] = selected;
   }
-
+  
+  // 返回url
   String get url {
     if (name == null) {
       return '';
@@ -201,7 +209,8 @@ extension NavigatorRouteSettings on RouteSettings {
     }
     return _urlOf[name!] ?? '';
   }
-
+  
+  // 获取路由index
   int get index {
     if (name == null) {
       return 0;
@@ -216,7 +225,8 @@ extension NavigatorRouteSettings on RouteSettings {
     }
     return _indexOf[name!]!;
   }
-
+  
+  // 是否是嵌套路由
   bool get isNested {
     final args = arguments;
     if (args != null && args is Map) {
@@ -224,7 +234,8 @@ extension NavigatorRouteSettings on RouteSettings {
     }
     return false;
   }
-
+  
+  // 是否需要童话
   bool get animated {
     final args = arguments;
     if (args != null && args is Map) {
@@ -232,7 +243,8 @@ extension NavigatorRouteSettings on RouteSettings {
     }
     return false;
   }
-
+  
+  // 参数获取
   dynamic get params {
     final args = arguments;
     if (args != null && args is Map) {
@@ -240,14 +252,16 @@ extension NavigatorRouteSettings on RouteSettings {
     }
     return null;
   }
-
+  
+  // 设置参数
   set params(dynamic value) {
     final args = arguments;
     if (args != null && args is Map) {
       args['params'] = value;
     }
   }
-
+  
+  // 获取fromURL
   String? get fromURL {
     final args = arguments;
     if (args != null && args is Map) {
@@ -255,7 +269,8 @@ extension NavigatorRouteSettings on RouteSettings {
     }
     return null;
   }
-
+  
+  // 获取prevURL
   String? get prevURL {
     final args = arguments;
     if (args != null && args is Map) {
@@ -263,14 +278,16 @@ extension NavigatorRouteSettings on RouteSettings {
     }
     return null;
   }
-
+  
+  // 设置prevURL
   set prevURL(String? value) {
     final args = arguments;
     if (args != null && args is Map) {
       args['prevURL'] = value;
     }
   }
-
+  
+  // 获取内部路由
   String? get innerURL {
     final args = arguments;
     if (args != null && args is Map) {

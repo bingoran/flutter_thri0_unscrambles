@@ -31,6 +31,7 @@ import 'navigator_page_observer.dart';
 import 'navigator_route_settings.dart';
 import 'thrio_navigator_implement.dart';
 
+/// 页面生命周期minxin
 mixin NavigatorPageLifecycleMixin<T extends StatefulWidget> on State<T> {
   late RouteSettings _current;
   late final _currentObserver = _CurrentLifecycleObserver(this);

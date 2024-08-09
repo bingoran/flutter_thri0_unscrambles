@@ -29,13 +29,17 @@ import 'navigator_route_settings.dart';
 import 'thrio_navigator_implement.dart';
 
 /// 导航观察管理类
+/// 提供 didPush、didPop、didRemove、didReplace
+/// 
+/// 
 class NavigatorObserverManager extends NavigatorObserver {
+  /// 存放导航观察对象
   final observers = <NavigatorObserver>[];
-
+  /// 存放当前 pop 的路由
   final currentPopRoutes = <NavigatorRoute>[];
-
+  /// 存放当前 remove 的路由
   final _currentRemoveRoutes = <NavigatorRoute>[];
-
+  /// 存放页面路由
   final pageRoutes = <Route<dynamic>>[];
 
   @override
@@ -53,10 +57,13 @@ class NavigatorObserverManager extends NavigatorObserver {
         ..routeChannel.didPush(route.settings)
         ..pageChannel.didAppear(route.settings, NavigatorRouteType.push);
     } else {
+      /// 不是第一个路由
       if (!route.isFirst) {
+        ///拿出栈顶路由
         final lastRoute = pageRoutes.last;
         pageRoutes.add(route);
         if (route is! PopupRoute && lastRoute is NavigatorRoute) {
+          // 拿到实现了NavigatorPageObserver的module，对当前页面调用didDisappear生命周期方法
           final observers = ThrioModule.gets<NavigatorPageObserver>(
             url: lastRoute.settings.url,
           );
@@ -79,37 +86,49 @@ class NavigatorObserverManager extends NavigatorObserver {
       }
     });
     if (route is NavigatorRoute) {
+      /// 移除路由
       pageRoutes.remove(route);
+      /// 将路由存放在currentPopRoutes里
       currentPopRoutes.add(route);
+      /// 如果currentPopRoutes只有一条数据
       if (currentPopRoutes.length == 1) {
+        /// 异步执行
         Future(() {
           if (currentPopRoutes.length == 1) {
+            /// 如果是回退到指定页面（popTo）
             if (pageRoutes.last is NavigatorRoute &&
                 // ignore: avoid_as
                 (pageRoutes.last as NavigatorRoute).routeType ==
                     NavigatorRouteType.popTo) {
+              /// 不是根路由
               if (pageRoutes.last.settings.url != '/') {
                 verbose('didPopTo: url->${pageRoutes.last.settings.url} '
                     'index->${pageRoutes.last.settings.index}');
+                /// 对pageRoutes里最后一个路由调用，路由事件didPopTo和页面生命周期事件didAppear
                 ThrioNavigatorImplement.shared()
                   ..routeChannel.didPopTo(pageRoutes.last.settings)
                   ..pageChannel.didAppear(
                       pageRoutes.last.settings, NavigatorRouteType.popTo);
               }
+              // 重置routeType状态
               // ignore: avoid_as
               (pageRoutes.last as NavigatorRoute).routeType = null;
+              // 清理当前currentPopRoutes的路由数据
               _currenPopRouteCallbackAndClear(currentPopRoutes);
             } else if (route.routeType == NavigatorRouteType.pop ||
                 route.routeType == null) {
+            /// 正常回退，执行pop操作（pop）
               // 这里需要判断 routeType == null 的场景，处理滑动返回需要
               verbose('didPop: url->${route.settings.url} '
                   'index->${route.settings.index} ');
+              // 对当前页面调用生命周期函数didDisappear，路由action调用didPop
               ThrioNavigatorImplement.shared()
                 ..routeChannel.didPop(route.settings)
                 ..pageChannel
                     .didDisappear(route.settings, NavigatorRouteType.pop);
               route.routeType = null;
             } else if (route.routeType == NavigatorRouteType.remove) {
+              /// 删除一个页面，对当前页面调用路由action调用didRemove
               ThrioNavigatorImplement.shared()
                   .routeChannel
                   .didRemove(route.settings);
@@ -117,8 +136,10 @@ class NavigatorObserverManager extends NavigatorObserver {
                 'didRemove: url->${route.settings.url} '
                 'index->${route.settings.index} ',
               );
+              /// 当前页面生命周期状态为resumed
               if (WidgetsBinding.instance.lifecycleState ==
                   AppLifecycleState.resumed) {
+                /// 执行生命周期函数didDisappear
                 ThrioNavigatorImplement.shared()
                     .pageChannel
                     .didDisappear(route.settings, NavigatorRouteType.remove);
@@ -127,9 +148,11 @@ class NavigatorObserverManager extends NavigatorObserver {
               _currenPopRouteCallbackAndClear(currentPopRoutes);
             }
           } else if (currentPopRoutes.length > 1) {
+            /// 如果当前currentPopRoutes大于1，而且是非根路由
             if (pageRoutes.last.settings.url != '/') {
               verbose('didPopTo: url->${pageRoutes.last.settings.url} '
                   'index->${pageRoutes.last.settings.index}');
+              // 则对即将显示的页面，执行didPopTo路由操作和didAppear的生命周期方法调用
               ThrioNavigatorImplement.shared()
                 ..routeChannel.didPopTo(pageRoutes.last.settings)
                 ..pageChannel.didAppear(
@@ -156,10 +179,12 @@ class NavigatorObserverManager extends NavigatorObserver {
         }
       }
     } else {
+      /// 移除路由
       pageRoutes.remove(route);
       if (route is! PopupRoute && pageRoutes.last is NavigatorRoute) {
         final observers = ThrioModule.gets<NavigatorPageObserver>(
             url: pageRoutes.last.settings.url);
+        /// 对当前最顶层的页面调用didAppear生命周期方法
         for (final observer in observers) {
           if (observer.settings == null ||
               observer.settings?.name == pageRoutes.last.settings.name) {
@@ -178,9 +203,13 @@ class NavigatorObserverManager extends NavigatorObserver {
       }
     });
     if (route is NavigatorRoute) {
+      // 路由移除
       pageRoutes.remove(route);
+      // 添加进即将移除路由数组中
       _currentRemoveRoutes.add(route);
+      /// 移除了，还剩一个移除的
       if (_currentRemoveRoutes.length == 1) {
+        /// 异步处理
         Future(() {
           if (_currentRemoveRoutes.length == 1) {
             final lastRoute = pageRoutes.last;

@@ -24,6 +24,7 @@ import 'package:flutter/material.dart';
 
 import 'thrio_navigator_implement.dart';
 
+// 热重载按钮
 class NavigatorHotRestartButton extends StatefulWidget {
   const NavigatorHotRestartButton({
     super.key,
