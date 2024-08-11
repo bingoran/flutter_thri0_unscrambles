@@ -31,6 +31,7 @@ enum NavigatorRouteType { push, pop, popTo, remove, replace }
 /// A route managed by the `ThrioNavigatorImplement`.
 /// 通过 ThrioNavigatorImplement 关联的路由管理器
 /// 主要功能是提供路由settings，以及路由拦截相关操作
+/// flutter 的路由都要进过该类
 ///
 mixin NavigatorRoute on PageRoute<bool> {
   /// 路由状态

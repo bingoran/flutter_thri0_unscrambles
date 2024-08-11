@@ -50,6 +50,7 @@ extension NavigatorRouteSettings on RouteSettings {
     dynamic params,
   }) {
     final idx = index ?? _fakeIndex--;
+    // thrio 的路由组成，由index url构造一个页面的唯一标识
     return RouteSettings(
       name: '$idx $url',
       arguments: <String, dynamic>{'params': params},

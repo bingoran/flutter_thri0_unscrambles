@@ -30,9 +30,12 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) => NavigatorMaterialApp(
         transitionPage: const NavigatorHome(showRestartButton: true),
-        builder: (context, child) => Container(
-          child: child,
-        ),
+        builder: (context, child){
+          ThrioLogger.i("object  ========");
+          return Container(
+            child: child,
+          );
+        },
         theme: ThemeData(
           pageTransitionsTheme: const PageTransitionsTheme(builders: {
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),

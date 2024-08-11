@@ -45,6 +45,10 @@ static NSMutableDictionary *modules;
 
 static ThrioModule *_module;
 
+/**
+ * module APP主module类
+ * preboot 是否提前启动
+ */
 + (void)init:(ThrioModule *)module preboot:(BOOL)preboot {
     NavigatorFlutterEngineFactory.shared.mainEnginePreboot = preboot;
     ThrioModuleContext *moduleContext = [[ThrioModuleContext alloc] init];

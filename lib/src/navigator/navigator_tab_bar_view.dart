@@ -18,6 +18,7 @@ import 'navigator_page_view.dart';
 /// [children] list and the length of the [TabBar.tabs] list.
 ///
 /// To see a sample implementation, visit the [TabController] documentation.
+/// 封装的一个导航TabBar NavigatorTabBarView 类
 class NavigatorTabBarView extends StatefulWidget {
   /// Creates a page view with one child per tab.
   ///

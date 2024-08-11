@@ -30,7 +30,7 @@ import 'thrio_navigator_implement.dart';
 
 /// 导航观察管理类
 /// 提供 didPush、didPop、didRemove、didReplace
-/// 
+/// 路由相关的操作，都要经过这个类
 /// 
 class NavigatorObserverManager extends NavigatorObserver {
   /// 存放导航观察对象

@@ -61,7 +61,9 @@ class ThrioNavigatorImplement {
   /// (4) 路由相关交互channel
   /// (5) 页面相关交互channel
   Future<void> init(ModuleContext moduleContext) async {
+    // 初始化设置module context
     _moduleContext = moduleContext;
+    
     _channel =
         ThrioChannel(channel: '__thrio_app__${moduleContext.entrypoint}');
     /// 回调监听，native调用 __thrio_module_context__XXX channel的 set 后触发
@@ -102,9 +104,13 @@ class ThrioNavigatorImplement {
           }
         }
         if (navigator != null) {
+          // 如果不包含这个导航观察类
           if (!navigator.observers.contains(observerManager)) {
+            // 添加一个导航观察类
             navigator.observers.add(observerManager);
           }
+          // print("object  ======222");
+          // 导航 widget
           return NavigatorWidget(
             key: _stateKey,
             moduleContext: _moduleContext,
@@ -149,7 +155,7 @@ class ThrioNavigatorImplement {
   //页面生命周期观察channel
   late final NavigatorPageObserverChannel pageChannel;
   
-  // 观察关联
+  // 观察管理类，路由相关的操作，都会触发这个导航观察类（提供 didPush、didPop、didRemove、didReplace 的观察）
   late final observerManager = NavigatorObserverManager();
 
   // 异步任务队列

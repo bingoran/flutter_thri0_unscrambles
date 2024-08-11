@@ -66,6 +66,7 @@ class NavigatorRouteReceiveChannel {
         final handlers = anchor.pushHandlers;
         for (final handler in handlers) {
           final result = await handler(routeSettings, animated: animated);
+          // 如果路由状态为，防止路由行为继续，则终止继续操作
           if (result == NavigatorRoutePushHandleType.prevention) {
             return false;
           }

@@ -32,6 +32,8 @@ import 'package:flutter_thrio/flutter_thrio.dart';
 /// [ModalRoute].
 ///
 mixin NavigatorWillPopMixin<T extends StatefulWidget> on State<T> {
+  
+  // 一个内部导航key
   GlobalKey<NavigatorState> get internalNavigatorKey;
 
   /// Called to veto attempts by the user to dismiss the enclosing [ModalRoute].

@@ -28,6 +28,7 @@ import 'navigator_types.dart';
 
 /// A route managed by the `ThrioNavigatorImplement`.
 /// 由ThrioNavigatorImplement管理的路由。
+/// 在页面跳转的时候，如果有过渡动画，需要执行过渡动画
 ///
 class NavigatorPageRoute extends MaterialPageRoute<bool> with NavigatorRoute {
   NavigatorPageRoute({

@@ -24,6 +24,10 @@ import 'package:flutter/widgets.dart';
 import '../module/thrio_module.dart';
 import 'navigator_page.dart';
 
+/// 
+/// 通用有状态组件父类
+/// 约束类初始化规范，moduleContext 和 settings 为必传参数
+/// 
 abstract class NavigatorStatefulPage extends StatefulWidget with NavigatorPage {
   const NavigatorStatefulPage({
     super.key,

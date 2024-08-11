@@ -48,11 +48,14 @@ class NavigatorWidget extends StatefulWidget {
     required NavigatorObserverManager observerManager,
     required this.child,
   }) : _observerManager = observerManager;
-
+  
+  // 通过 child.widget 获取导航器里的page wiget,
   final Navigator child;
 
+  // module context
   final ModuleContext moduleContext;
-
+ 
+  // 导航观察器
   final NavigatorObserverManager _observerManager;
 
   @override
@@ -60,9 +63,10 @@ class NavigatorWidget extends StatefulWidget {
 }
 
 class NavigatorWidgetState extends State<NavigatorWidget> {
+  // 初始化一个全部使用默认值的系统UI对象
   final _style = const SystemUiOverlayStyle();
   
-  /// 当前路由栈
+  /// 当前整个APP的路由堆栈
   List<Route<dynamic>> get history => widget._observerManager.pageRoutes;
 
   /// 还无法实现animated=false
@@ -70,14 +74,16 @@ class NavigatorWidgetState extends State<NavigatorWidget> {
     RouteSettings settings, {
     bool animated = true,
   }) async {
+    // 拿到导航器
     final navigatorState = widget.child.tryStateOf<NavigatorState>();
     if (navigatorState == null) {
       return false;
     }
     
-    // 获取即将要展示的页面
+    // 根据url获取即将要展示的页面
     final pageBuilder =
         ThrioModule.get<NavigatorPageBuilder>(url: settings.url);
+    // 如果没找到页面，则返回false，把处理交还给native
     if (pageBuilder == null) {
       return false;
     }
@@ -86,14 +92,18 @@ class NavigatorWidgetState extends State<NavigatorWidget> {
     // await anchor.loading(settings.url);
 
     NavigatorRoute route;
+    // 根据url，在注册的moudle中获取是否有实现了提供NavigatorRouteBuilder的moduel
     final routeBuilder =
         ThrioModule.get<NavigatorRouteBuilder>(url: settings.url);
     if (routeBuilder == null) {
+      // 如果没有，构建一个pageRouter，NavigatorPageRoute继承自NavigatorRoute
       route = NavigatorPageRoute(pageBuilder: pageBuilder, settings: settings);
     } else {
+      // 如果有，直接执行moudel重新的
       route = routeBuilder(pageBuilder, settings);
     }
-
+    
+    // 执行页面即将展示操作
     ThrioNavigatorImplement.shared()
         .pageChannel
         .willAppear(route.settings, NavigatorRouteType.push);
@@ -104,9 +114,10 @@ class NavigatorWidgetState extends State<NavigatorWidget> {
       'params->${route.settings.params}',
     );
 
-    // 设置一个空值，避免页面打开后不生效
+    // 设置系统界面的样式：设置一个空值，避免页面打开后不生效
     SystemChrome.setSystemUIOverlayStyle(_style);
-
+    
+    /// 导航push一个flutter页面
     // ignore: unawaited_futures
     navigatorState.push(route);
     route.settings.isPushed = true;
@@ -377,6 +388,7 @@ class NavigatorWidgetState extends State<NavigatorWidget> {
   void initState() {
     super.initState();
     if (mounted) {
+      // 执行ready, 至此，flutter 侧已经初始化完毕，本地做一些出来，也会通知native侧初始化完成
       ThrioNavigatorImplement.shared().ready();
     }
   }
