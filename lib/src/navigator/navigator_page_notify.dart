@@ -31,6 +31,8 @@ import 'navigator_route_settings.dart';
 import 'navigator_types.dart';
 import 'thrio_navigator_implement.dart';
 
+/// 通知组件
+/// 
 class NavigatorPageNotify extends StatefulWidget {
   const NavigatorPageNotify({
     super.key,
@@ -54,7 +56,7 @@ class NavigatorPageNotify extends StatefulWidget {
 
 class _NavigatorPageNotifyState extends State<NavigatorPageNotify> {
   RouteSettings? _settings;
-
+  // 通知订阅流
   StreamSubscription<dynamic>? _notifySubscription;
 
   @override
@@ -69,7 +71,9 @@ class _NavigatorPageNotifyState extends State<NavigatorPageNotify> {
 
   @override
   void didChangeDependencies() {
+    // 根据当前context获取routerSetting
     final settings = NavigatorPage.routeSettingsOf(context);
+    // 如果没有初始化过监听，初始化
     if (settings.name != _settings?.name) {
       _settings = settings;
       _notifySubscription?.cancel();
@@ -87,10 +91,12 @@ class _NavigatorPageNotifyState extends State<NavigatorPageNotify> {
   @override
   void didUpdateWidget(covariant NavigatorPageNotify oldWidget) {
     super.didUpdateWidget(oldWidget);
+    // 初始化数据有更新，则通知一次页面
     if (widget.initialParams != null &&
         widget.initialParams != oldWidget.initialParams) {
       widget.onPageNotify(widget.initialParams);
     }
+    // 监听名字字段变化了，则重新注册监听
     if (widget.name != oldWidget.name) {
       _notifySubscription?.cancel();
       _notifySubscription = ThrioNavigatorImplement.shared()
@@ -102,7 +108,8 @@ class _NavigatorPageNotifyState extends State<NavigatorPageNotify> {
           .listen(_listen);
     }
   }
-
+  
+  /// 监听通知事件流
   void _listen(dynamic params) {
     if (params != null) {
       if (params is Map) {

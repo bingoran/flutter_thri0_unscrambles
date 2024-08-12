@@ -44,6 +44,7 @@ class NavigatorObserverManager extends NavigatorObserver {
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    // 所有观察的对象，执行didPush
     for (final ob in observers) {
       ob.didPush(route, previousRoute);
     }
@@ -81,6 +82,7 @@ class NavigatorObserverManager extends NavigatorObserver {
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     Future(() {
+      // 所有观察的对象，执行didPop
       for (final ob in observers) {
         ob.didPop(route, previousRoute);
       }
@@ -198,6 +200,7 @@ class NavigatorObserverManager extends NavigatorObserver {
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     Future(() {
+      // 所有观察的对象，执行didPop
       for (final ob in observers) {
         ob.didRemove(route, previousRoute);
       }

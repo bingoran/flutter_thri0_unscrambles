@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage>
       widget.moduleContext.onStringKeyBiz1.listen((i) {
         ThrioLogger.v('onIntKeyRootModule value is $i');
       });
+      ThrioLogger.v('onIntKeyRootModule value is1: ${widget.moduleContext.module.hashCode}');
     }
   }
 
@@ -67,11 +68,13 @@ class _HomePageState extends State<HomePage>
   @override
   void didAppear(RouteSettings routeSettings) {
     super.didAppear(routeSettings);
+    ThrioLogger.v('flutter1===>page Appear');
   }
 
   @override
   void didDisappear(RouteSettings routeSettings) {
     super.didDisappear(routeSettings);
+    ThrioLogger.v('flutter1===>page Disappear');
   }
 
   @override
@@ -82,6 +85,8 @@ class _HomePageState extends State<HomePage>
         // root.biz1.flutter1.home.replace(newUrl: root.biz2.flutter2.url);
         if (settings.url == biz.biz2.flutter2.url) {
           ThrioLogger.d('page2 onPush');
+          // 如果在push的地方返回prevention，当前push就禁止了
+          // return NavigatorRoutePushHandleType.prevention;
         }
         return NavigatorRoutePushHandleType.none;
       },
@@ -160,6 +165,8 @@ class _HomePageState extends State<HomePage>
                             }
 
                             widget.moduleContext.setStringKeyBiz1('value');
+                            final value1 = widget.moduleContext.stringKeyBiz1;
+                            ThrioLogger.v('stringKeyBiz1 value is value:$value1');
 
                             final value =
                                 widget.moduleContext.get('people_from_native');
@@ -219,7 +226,7 @@ class _HomePageState extends State<HomePage>
                               url:
                                   '${biz.biz2.flutter2.url}?fewfew=2131&fwe=1&&',
                               params: People(name: '大宝剑', age: 0, sex: 'x'),
-                              animated: false,
+                              animated: true,
                               result: (index) {
                                 ThrioLogger.v('test_async_queue: push $index');
                               },

@@ -25,8 +25,8 @@ part of 'thrio_module.dart';
 
 /// 模块上线文
 /// 1、提供入口名
-/// 2、存储模块对象，通过Expando
-/// 3、
+/// 2、通过Expando存储模块对象
+/// 3、可以在Context上订阅参数，但是前提得先进行 onParamSchemeRegister 进行参数注册
 class ModuleContext {
   ModuleContext({this.entrypoint = 'main'});
 
@@ -111,6 +111,7 @@ class ModuleContext {
 
     if (module is ModuleParamScheme) {
       final paramModule = module as ModuleParamScheme;
+      // ⚠️注意：这里T的类型必须和注册Param Scheme 注册时候的类型一致
       if (paramModule.hasParamScheme<T>(key)) {
         return paramModule.onParam<T>(key, initialValue: initialValue);
       }

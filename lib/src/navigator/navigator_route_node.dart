@@ -27,22 +27,27 @@ class NavigatorRouteNode {
   NavigatorRouteNode.home() : this(_emptyRouteNode);
 
   /// parent route node
+  /// 父路由节点
   ///
   late final NavigatorRouteNode parent;
 
   /// Current route node name
+  /// 当前路由节点路由名
   ///
   String get name => '';
-
+  
+  // 保存路由路径，当调用过一次url后，就会把得到的路径保存在_url里
   String? _url;
 
   /// Get route url by join all route node's name.
+  /// 通过连接所有路由节点的名称来获取路由url
   ///
   String get url {
     _initUrl(this);
     return _url!;
   }
-
+  
+  // 通知
   Future<bool> notify<TParams>(
     String name, {
     TParams? params,
@@ -54,6 +59,7 @@ class NavigatorRouteNode {
       );
 }
 
+// 根据传入的routeNode进行回溯，找到完整的路由url
 void _initUrl(NavigatorRouteNode routeNode) {
   if (routeNode._url == null) {
     var parentUrl = '';
@@ -85,6 +91,7 @@ class NavigatorRouteLeaf extends NavigatorRouteNode {
 
 final EmptyNavigatorRoute _emptyRouteNode = EmptyNavigatorRoute._();
 
+// 空节点
 class EmptyNavigatorRoute implements NavigatorRouteNode {
   EmptyNavigatorRoute._();
 

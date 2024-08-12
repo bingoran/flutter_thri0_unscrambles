@@ -30,16 +30,20 @@ mixin ModuleRouteObserver on ThrioModule {
   final routeObservers = RegistrySet<NavigatorRouteObserver>();
 
   /// A function for register a route observer.
+  /// 注册路由监听
   ///
   @protected
   void onRouteObserverRegister(ModuleContext moduleContext) {}
 
   /// Register observers for routing actions. Only the pages under the current module and
   /// sub-module take effect.
+  /// 注册路由操作的观察者。仅对当前模块及子模块下的页面生效
   ///
   /// Unregistry by calling the return value `VoidCallback`.
+  /// 通过调用返回值 VoidCallback 来取消注册
   ///
   /// Do not override this method.
+  /// 请勿重写此方法
   ///
   @protected
   VoidCallback registerRouteObserver(NavigatorRouteObserver routeObserver) =>

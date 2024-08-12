@@ -9,6 +9,8 @@ import 'flutter1.route_action.dart';
 import 'home/module.dart' as home;
 
 class Module with ThrioModule, ModuleRouteAction {
+
+  //router action 注册
   @override
   void onRouteActionRegister(final ModuleContext moduleContext) {
     registerRouteAction('getPeople{intValue?}', <TParams, TResult>(

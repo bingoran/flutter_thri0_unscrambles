@@ -120,6 +120,7 @@ class NavigatorWidgetState extends State<NavigatorWidget> {
     /// 导航push一个flutter页面
     // ignore: unawaited_futures
     navigatorState.push(route);
+    // 设置页面为已push类型
     route.settings.isPushed = true;
 
     return true;

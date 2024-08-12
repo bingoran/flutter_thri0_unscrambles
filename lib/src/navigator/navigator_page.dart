@@ -54,26 +54,34 @@ mixin NavigatorPage {
       getMapValue<K, V>(settings.params, key);
 
   /// Get moduleContext from current page.
+  /// 获取当前页面的 moduleContext
   ///
   /// This method should not be called from [State.deactivate] or [State.dispose]
   /// because the element tree is no longer stable at that time. To refer to
   /// an ancestor from one of those methods, save a reference to the ancestor
   /// by calling [visitAncestorElements] in [State.didChangeDependencies].
+  /// 此方法不应在 [State.deactivate] 或 [State.dispose] 中调用，
+  /// 因为此时元素树已不再稳定。要从这些方法中引用一个祖先，
+  /// 请通过在 [State.didChangeDependencies] 中调用 [visitAncestorElements] 保存对该祖先的引用。
   ///
   static ModuleContext moduleContextOf(
     BuildContext context, {
     bool pageModuleContext = false,
   }) {
+    // 根据context获取当前页面widget
     final page = of(context, pageModuleContext: pageModuleContext);
     if (page != null) {
+      // 找到了page,返回moduleContext
       return page.moduleContext;
     }
     // 触发兜底逻辑
     final widget = context.widget;
+    // 如果当前context对应的widget是NavigatorMaterialApp，返回context
     if (widget is NavigatorMaterialApp) {
       return widget.moduleContext;
     }
     NavigatorMaterialApp? app;
+    // 遍历该context的父组件，寻找是否有NavigatorMaterialApp类型的widget
     context.visitAncestorElements((it) {
       final widget = it.widget;
       if (widget is NavigatorMaterialApp) {
@@ -89,6 +97,7 @@ mixin NavigatorPage {
   }
 
   /// Get params of current page.
+  /// 获取当前page的传入参数
   ///
   /// This method should not be called from [State.deactivate] or [State.dispose]
   /// because the element tree is no longer stable at that time. To refer to
@@ -102,6 +111,7 @@ mixin NavigatorPage {
       routeSettingsOf(context, pageModuleContext: pageModuleContext).params;
 
   /// Get RouteSettings of current page.
+  /// 根据当前上下文，获取RouteSettings
   ///
   /// This method should not be called from [State.deactivate] or [State.dispose]
   /// because the element tree is no longer stable at that time. To refer to
@@ -116,6 +126,7 @@ mixin NavigatorPage {
       (throw ThrioException('no RouteSettings on the page'));
 
   /// Get url of current page.
+  /// 返回当前page的url
   ///
   /// This method should not be called from [State.deactivate] or [State.dispose]
   /// because the element tree is no longer stable at that time. To refer to
@@ -129,6 +140,7 @@ mixin NavigatorPage {
       routeSettingsOf(context, pageModuleContext: pageModuleContext).url;
 
   /// Get index of current page.
+  /// 通过index获取当前页面
   ///
   /// This method should not be called from [State.deactivate] or [State.dispose]
   /// because the element tree is no longer stable at that time. To refer to
@@ -142,20 +154,26 @@ mixin NavigatorPage {
       routeSettingsOf(context, pageModuleContext: pageModuleContext).index;
 
   /// Get current page.
+  /// 获取当前页面。
   ///
   /// This method should not be called from [State.deactivate] or [State.dispose]
   /// because the element tree is no longer stable at that time. To refer to
   /// an ancestor from one of those methods, save a reference to the ancestor
   /// by calling [visitAncestorElements] in [State.didChangeDependencies].
+  /// 此方法不应在 [State.deactivate] 或 [State.dispose] 中调用，因为此时元素树已不再稳定。
+  /// 要在这些方法中引用一个祖先，请在 [State.didChangeDependencies] 中通过调用 [visitAncestorElements] 来保存对该祖先的引用。
   ///
   static NavigatorPage? of(
     BuildContext context, {
     bool pageModuleContext = false,
   }) {
     NavigatorPage? page;
+    // 获取当前context的对应的widget
     final widget = context.widget;
+    // 如果widget是NavigatorPage类型(页面实现了 NavigatorPage 这个minxi)
     if (widget is NavigatorPage) {
       page = widget as NavigatorPage;
+      // pageModuleContext 为true
       if (pageModuleContext) {
         if (page.settings.isPushed) {
           return page;
@@ -163,8 +181,11 @@ mixin NavigatorPage {
       } else {
         return page;
       }
+      // 如果
       page = null;
     }
+
+    //遍历当前 BuildContext 的祖先元素
     context.visitAncestorElements((it) {
       final widget = it.widget;
       if (widget is NavigatorPage) {
@@ -172,8 +193,10 @@ mixin NavigatorPage {
         if (pageModuleContext) {
           return page!.settings.isPushed;
         }
+        //返回 false 以停止遍历
         return false;
       }
+      //返回 true 以继续遍历
       return true;
     });
     return page;

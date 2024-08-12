@@ -41,6 +41,9 @@ mixin ModuleParamScheme on ThrioModule {
       if (T == dynamic || T == Object) {
         return true;
       }
+      //这里其实可以处理下，如果注册的时候没有指定类型，注册的默认类型就是dynamic
+      //如果在使用的时候，监听属性如果指定了固定类型，如T此时是String；那么此时这里的 _paramSchemes[key] 为注册类型dynamic
+      //就会返回false
       return _paramSchemes[key] == T;
     }
     return false;
@@ -162,7 +165,7 @@ mixin ModuleParamScheme on ThrioModule {
   }
 
   void _setParam(Comparable<dynamic> key, dynamic value) {
-    // 如果值没存储过，进行存储
+    // 如果值没存储过，进行存储;如果是相同的值，不重复通知
     if (_params[key] != value) {
       // 存储
       _params[key] = value;
@@ -214,7 +217,7 @@ mixin ModuleParamScheme on ThrioModule {
   void onParamSchemeRegister(ModuleContext moduleContext) {}
 
   /// Register a param scheme for the module.
-  /// 为模块注册一个参数方案
+  /// 为模块注册一个参数scheme
   ///
   /// `T` can be optional.
   /// T 可以是可选的。

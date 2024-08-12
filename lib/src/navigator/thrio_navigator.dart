@@ -308,7 +308,7 @@ abstract class ThrioNavigator {
       );
   
 
-  /// 生产一个 NavigatorRouteAction
+  /// 处理 NavigatorRouteAction
   static Future<TResult?> act<TParams, TResult>({
     required String url,
     required String action,

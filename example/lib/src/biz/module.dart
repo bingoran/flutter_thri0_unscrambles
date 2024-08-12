@@ -52,7 +52,7 @@ class Module
 
   @override
   void onJsonSerializerRegister(final ModuleContext moduleContext) {
-    // 给对象注册序列化器
+    // 给对象注册序列化器：i 是传递进来的一个函数，函数调用后返回一个编码对象
     registerJsonSerializer<People>((i) => i<People>().toJson());
     registerJsonSerializer<House>((i) => i<House>().toJson());
     registerJsonSerializer<UserProfile>((i) => i<UserProfile>().toJson());

@@ -71,7 +71,8 @@ class NavigatorUrlTemplate {
     }
     return other is NavigatorUrlTemplate && template == other.template;
   }
-
+  
+  // 匹配模版
   bool match(Uri uri) {
     // url 允许通过传入模板来表明使用者已经正常传入参数
     var uriPath = Uri.decodeFull(uri.path);

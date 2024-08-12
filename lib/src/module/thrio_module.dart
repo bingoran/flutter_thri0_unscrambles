@@ -76,7 +76,7 @@ mixin ThrioModule {
     anchor
       .._moduleContext = moduleContext
       ..registerModule(rootModule, moduleContext);
-    /// 模块初始化，导航器初始化
+    /// 模块初始化，导航器初始化，通讯channel初始化
     await anchor.onModuleInit(moduleContext);
     await anchor.initModule();
   }
@@ -117,7 +117,7 @@ mixin ThrioModule {
   ///
   static Iterable<T> gets<T>({required String url}) => anchor.gets<T>(url);
   
-  ///保存注册的所有 model
+  ///保存当前 moduel 的子moduel
   @protected
   final modules = <String, ThrioModule>{};
 
@@ -194,12 +194,15 @@ mixin ThrioModule {
   ///
   @protected
   Future<void> initModule() async {
+    //对子模块进行处理
     final values = modules.values;
+    /// 注册模块对应的Param Scheme，Param Scheme主要作用是在moduelContext上新增属性，以及对熟悉进行监听
     for (final module in values) {
       if (module is ModuleParamScheme) {
         module.onParamSchemeRegister(module._moduleContext);
       }
     }
+    /// 注册路由Route Action 和自定义的路由处理
     for (final module in values) {
       if (module is ModuleRouteAction) {
         module.onRouteActionRegister(module._moduleContext);
@@ -208,40 +211,58 @@ mixin ThrioModule {
         module.onRouteCustomHandlerRegister(module._moduleContext);
       }
     }
+
+    /// 页面注册
     for (final module in values) {
+      // 注册页面
       if (module is ModulePageBuilder) {
         module.onPageBuilderSetting(module._moduleContext);
       }
+      //注册路由builder，返回的是 NavigatorRoute 对象，在执行路由操作的时候，如果有重写，优先使用重写
       if (module is ModuleRouteBuilder) {
         module.onRouteBuilderSetting(module._moduleContext);
       }
+      //注册页面过渡动画
       if (module is ModuleRouteTransitionsBuilder) {
         module.onRouteTransitionsBuilderSetting(module._moduleContext);
       }
     }
+    
+    // 监听
     for (final module in values) {
+      // 页面生命周期监听， 用于module生命周期监听
       if (module is ModulePageObserver) {
         module.onPageObserverRegister(module._moduleContext);
       }
+      // 路由生命周期监听，用于module支持路由监听
       if (module is ModuleRouteObserver) {
         module.onRouteObserverRegister(module._moduleContext);
       }
     }
+    
+    // 注册编解码对象，一般它们是成对出现的
     for (final module in values) {
+      /// 注册编码器
       if (module is ModuleJsonSerializer) {
         module.onJsonSerializerRegister(module._moduleContext);
       }
+      // 注册解码器
       if (module is ModuleJsonDeserializer) {
         module.onJsonDeserializerRegister(module._moduleContext);
       }
     }
+    
+    // 注册 ModuleJsonable：应该是通过Jsonable简化上面编解码的使用
     for (final module in values) {
       if (module is ModuleJsonable) {
         module.onJsonableRegister(module._moduleContext);
       }
     }
+
     for (final module in values) {
+      // 回调正在初始化哪个模块（同步初始化）
       onModuleInitStart?.call(module.url);
+      // debug 环境打印模块初始化事件，正是环境不打印
       if (kDebugMode) {
         final sw = Stopwatch()..start();
         await module.onModuleInit(module._moduleContext);
@@ -250,9 +271,13 @@ mixin ThrioModule {
       } else {
         await module.onModuleInit(module._moduleContext);
       }
+      // 回调module为url的模块初始化结束
       onModuleInitEnd?.call(module.url);
+      // 继续初始化子模块
       await module.initModule();
     }
+    
+    //模块异步初始化
     for (final module in values) {
       unawaited(module.onModuleAsyncInit(module._moduleContext));
     }

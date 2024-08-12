@@ -63,6 +63,8 @@ class NavigatorRouteReceiveChannel {
         routeSettings.params =
             _deserializeParams(routeSettings.url, routeSettings.params);
         final animated = arguments?['animated'] == true;
+
+        // 检查当前页面是否有pushHandlers操作
         final handlers = anchor.pushHandlers;
         for (final handler in handlers) {
           final result = await handler(routeSettings, animated: animated);
@@ -71,6 +73,8 @@ class NavigatorRouteReceiveChannel {
             return false;
           }
         }
+        
+        //走正常push操作
         return await ThrioNavigatorImplement.shared()
                 .navigatorState
                 ?.push(routeSettings, animated: animated)
@@ -194,7 +198,7 @@ class NavigatorRouteReceiveChannel {
     int index = 0,
   }) =>
       _channel
-          .onEventStream('__onNotify__')
+          .onEventStream('__onNotify__') //注册Event事件流
           .where((arguments) =>
               arguments.containsValue(name) &&
               (url == null || url.isEmpty || arguments.containsValue(url)) &&

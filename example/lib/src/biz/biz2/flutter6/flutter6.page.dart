@@ -181,9 +181,11 @@ class _Flutter6PageState extends State<Flutter6Page> {
             ),
             InkWell(
               onTap: () async {
+                debugPrint(biz.biz1.flutter1.home.url);
                 final result = await ThrioNavigator.act(
                     url: biz.biz1.flutter1.home.url,
-                    action: 'getPeople?intValue=12',
+                    // action: 'getPeople?intValue=12',
+                    action: 'getPeople{intValue=12}',
                     params: <String, dynamic>{'intValue': 11});
                 debugPrint(result.toString());
               },

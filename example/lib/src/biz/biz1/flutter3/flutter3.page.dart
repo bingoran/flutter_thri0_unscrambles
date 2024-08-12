@@ -39,6 +39,7 @@ class _Flutter3PageState extends State<Flutter3Page>
     super.build(context);
     return WillPopScope(
         onWillPop: () async {
+          // return false;
           final r = await ThrioNavigator.push(url: '/biz/biz2/flutter2');
           ThrioLogger.i('page3 WillPopScope: $r');
           return true;
@@ -90,7 +91,7 @@ class _Flutter3PageState extends State<Flutter3Page>
                     )),
               ),
               InkWell(
-                onTap: () => ThrioNavigator.pop(params: 'goodman'),
+                onTap: () => ThrioNavigator.maybePop(params: 'goodman'),
                 child: Container(
                     padding: const EdgeInsets.all(4),
                     margin: const EdgeInsets.all(4),

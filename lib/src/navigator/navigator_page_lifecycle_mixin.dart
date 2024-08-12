@@ -50,6 +50,7 @@ mixin NavigatorPageLifecycleMixin<T extends StatefulWidget> on State<T> {
   void initState() {
     super.initState();
     if (mounted) {
+      // 注册
       ThrioNavigatorImplement.shared().observerManager.observers.add(_observer);
     }
   }
@@ -195,10 +196,12 @@ class _AnchorLifecycleObserver with NavigatorPageObserver {
   }
 }
 
+// 导航观察
+// 当mounted之后才进行注册
 // ignore: prefer_mixin
 class _NavigatorMountedObserver extends NavigatorObserver {
   _NavigatorMountedObserver(this._delegate);
-
+  // 目标类
   final NavigatorPageLifecycleMixin _delegate;
 
   @override

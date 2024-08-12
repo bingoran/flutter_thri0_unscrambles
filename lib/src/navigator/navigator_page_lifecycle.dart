@@ -24,6 +24,7 @@ import 'package:flutter/widgets.dart';
 import 'navigator_page_lifecycle_mixin.dart';
 import 'navigator_types.dart';
 
+/// 生命周期组件，这个主要用于嵌套类型的使用
 class NavigatorPageLifecycle extends StatefulWidget {
   const NavigatorPageLifecycle({
     super.key,

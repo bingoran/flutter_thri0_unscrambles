@@ -128,7 +128,7 @@ class ThrioNavigatorImplement {
   //module 上下文
   late final ModuleContext _moduleContext;
   
-  //一个记录当前状态的全局状态key
+  //一个记录当前状态的全局状态key，初始化执行builder的时候，传递到 NavigatorWidget
   late final _stateKey = GlobalKey<NavigatorWidgetState>();
   
   // 当前导航状态
@@ -1305,7 +1305,8 @@ class ThrioNavigatorImplement {
     bool disabled = true,
   }) =>
       _sendChannel.setPopDisabled(url: url, index: index, disabled: disabled);
-
+  
+  // 注册页面通知
   Stream<dynamic> onPageNotify({
     required String name,
     String? url,
@@ -1339,7 +1340,8 @@ class ThrioNavigatorImplement {
 
     return params;
   }
-
+  
+  // 同步页面PoppedResults
   Future<void> syncPagePoppedResults({NavigatorRoute? route}) async {
     route?.poppedResult?.call(null);
     if (poppedResults.isEmpty) {
