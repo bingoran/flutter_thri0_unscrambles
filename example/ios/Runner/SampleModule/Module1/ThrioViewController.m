@@ -104,6 +104,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.thrio_hidesNavigationBar = YES;
+    
     if (self.thrio_firstRoute.settings) {
         NSString *txt =
             [NSString stringWithFormat:@"native page: %@ \n index: %@",

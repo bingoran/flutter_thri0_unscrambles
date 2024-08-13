@@ -24,10 +24,12 @@
 
 @implementation ThrioModule (PageBuilders)
 
+// 获取flutter页面的pagebuild
 + (NavigatorFlutterPageBuilder _Nullable)flutterPageBuilder {
     return objc_getAssociatedObject(self, _cmd);
 }
 
+// 设置flutter页面的pagebuild
 + (void)setFlutterPageBuilder:(NavigatorFlutterPageBuilder _Nullable)builder {
     objc_setAssociatedObject(self,
                              @selector(flutterPageBuilder),
@@ -35,6 +37,7 @@
                              OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
+// 存放注册的所有native pageBuilder
 + (ThrioRegistryMap *)pageBuilders {
     id builders = objc_getAssociatedObject(self, _cmd);
     if (!builders) {

@@ -75,6 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (void)load {
+    // 替换生命周期方法
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [self instanceSwizzle:@selector(viewWillAppear:)

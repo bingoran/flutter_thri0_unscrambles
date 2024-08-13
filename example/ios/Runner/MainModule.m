@@ -16,6 +16,7 @@
 @implementation MainModule
 
 - (void)onModuleInit:(ThrioModuleContext *)moduleContext {
+    // 设置flutter页面的pagebuild
     [self setFlutterPageBuilder:^(NavigatorFlutterEngine *engine) {
         return [[CustomFlutterViewController alloc] initWithEngine:engine];
     }];

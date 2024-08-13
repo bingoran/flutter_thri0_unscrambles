@@ -23,6 +23,26 @@
     [self registerPageObserver:self];
 }
 
+- (void)onRouteObserverRegister:(ThrioModuleContext *)moduleContext {
+    [self registerRouteObserver:self];
+}
+
+- (void)didPop:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>didPop == 1  %@",routeSettings.url);
+}
+
+- (void)didPopTo:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>didPopTo == 1  %@",routeSettings.url);
+}
+
+- (void)didPush:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>didPush == 1  %@",routeSettings.url);
+}
+
+- (void)didRemove:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>didRemove == 1  %@",routeSettings.url);
+}
+
 - (void)willAppear:(NavigatorRouteSettings *)routeSettings {
     NSLog(@"====>>>willAppear == 1  %@",routeSettings.url);
 }
@@ -36,7 +56,7 @@
 }
 
 - (void)didDisappear:(NavigatorRouteSettings *)routeSettings {
-    NSLog(@"didDisappear == 1  %@",routeSettings.url);
+    NSLog(@"====>>>didDisappear == 1  %@",routeSettings.url);
 }
 
 @end

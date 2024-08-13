@@ -29,15 +29,19 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)didPop:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>didPop == 2  %@",routeSettings.url);
 }
 
 - (void)didPopTo:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>didPopTo == 2  %@",routeSettings.url);
 }
 
 - (void)didPush:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>didPush == 2  %@",routeSettings.url);
 }
 
 - (void)didRemove:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>didRemove == 2  %@",routeSettings.url);
 }
 
 - (void)willAppear:(NavigatorRouteSettings *)routeSettings {

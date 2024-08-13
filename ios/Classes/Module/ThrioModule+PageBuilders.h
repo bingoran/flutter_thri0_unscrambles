@@ -24,7 +24,7 @@
 #import "FlutterThrioTypes.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
+// 统一存放 Native VC 和 Flutter VC 
 @interface ThrioModule (PageBuilders)
 
 + (ThrioRegistryMap *)pageBuilders;

@@ -102,11 +102,13 @@ NS_ASSUME_NONNULL_BEGIN
                                                                        fromURL:fromURL
                                                                        prevURL:prevURL
                                                                       innerURL:innerURL];
+    // 初始化一个页面Route
     NavigatorPageRoute *newRoute = [NavigatorPageRoute routeWithSettings:settings];
     newRoute.fromEntrypoint = fromEntrypoint;
     newRoute.fromPageId = [self hash];
     newRoute.poppedResult = poppedResult;
     
+    //当前VC是一个 Flutter VC
     if ([self isKindOfClass:NavigatorFlutterViewController.class]) {
         id serializeParams = [ThrioModule serializeParams:params];
         NSMutableDictionary *arguments = [NSMutableDictionary dictionaryWithDictionary:[settings toArgumentsWithParams:serializeParams]];
@@ -114,26 +116,34 @@ NS_ASSUME_NONNULL_BEGIN
         NavigatorRouteSendChannel *channel =
         [NavigatorFlutterEngineFactory.shared getSendChannelByEntrypoint:entrypoint];
         __weak typeof(self) weakSelf = self;
+        // flutter 侧去push
         [channel push:arguments result:^(BOOL r) {
+            // push 后的回调
             __strong typeof(weakSelf) strongSelf = weakSelf;
             if (r) {
+               // push 成功了
                 if (strongSelf.thrio_firstRoute) {
+                    // 指定当前router的前置节点，和后续节点
                     NavigatorPageRoute *lastRoute = strongSelf.thrio_lastRoute;
                     lastRoute.next = newRoute;
                     newRoute.prev = lastRoute;
                 } else {
                     strongSelf.thrio_firstRoute = newRoute;
                 }
-                
+                //当前rout特人记录为最后一个页面router
                 ThrioModule.pageObservers.lastRoute = newRoute;
             }
+            // 回调当前的路由下标
             if (result) {
                 result(r ? index : @0);
             }
+            //重置thrio_routeType状态
             strongSelf.thrio_routeType = NavigatorRouteTypeNone;
         }];
     } else {
+        // 当前VC就是一个常规VC
         if (self.thrio_firstRoute) {
+            //  指定当前router的前置节点，和后续节点
             NavigatorPageRoute *lastRoute = self.thrio_lastRoute;
             lastRoute.next = newRoute;
             newRoute.prev = lastRoute;
@@ -141,10 +151,12 @@ NS_ASSUME_NONNULL_BEGIN
             self.thrio_firstRoute = newRoute;
         }
         
+        //当前rout特人记录为最后一个页面router
         ThrioModule.pageObservers.lastRoute = newRoute;
         if (result) {
             result(index);
         }
+        //重置thrio_routeType状态
         self.thrio_routeType = NavigatorRouteTypeNone;
     }
 }

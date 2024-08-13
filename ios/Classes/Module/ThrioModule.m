@@ -63,6 +63,9 @@ static ThrioModule *_module;
     [_module initModule];
 }
 
+/**
+ * 多引擎初始化，多引擎初始化，引擎预热设置为false
+ */
 + (void)initMultiEngine:(ThrioModule *)module {
     NavigatorFlutterEngineFactory.shared.multiEngineEnabled = YES;
     [ThrioModule init:module preboot:NO];
@@ -161,6 +164,7 @@ static ThrioModule *_module;
             }
         }
         if (canTransParams.count > 0) {
+            //同步context参数
             [engine.moduleContextChannel invokeMethod:@"set" arguments:canTransParams];
         }
         if (block) {

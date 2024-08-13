@@ -25,12 +25,13 @@
 #import "ThrioModule+PageBuilders.h"
 
 @implementation ThrioModule (PageBuilder)
-// 注册PageBuilder
+// 注册native页面的PageBuilder
 - (ThrioVoidCallback)registerPageBuilder:(NavigatorPageBuilder)builder
                                   forUrl:(NSString *)url {
     return [ThrioModule.pageBuilders registry:url value:builder];
 }
 
+// 注册flutter页面的pageBuilder
 - (void)setFlutterPageBuilder:(NavigatorFlutterPageBuilder)builder {
     ThrioModule.flutterPageBuilder = builder;
 }

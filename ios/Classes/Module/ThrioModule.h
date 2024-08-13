@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 + (void)init:(ThrioModule *)module preboot:(BOOL)preboot;
 
+/// 初始化多引擎
 + (void)initMultiEngine:(ThrioModule *)module;
 
 ///一个注册模块的函数。

@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - on channel methods
-
+// flutter 侧初始化完毕，会给native发送一个ready
 - (void)_onReady {
     __weak typeof(self) weakself = self;
     [_channel registryMethod:@"ready"

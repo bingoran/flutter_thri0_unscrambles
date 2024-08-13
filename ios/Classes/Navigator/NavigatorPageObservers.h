@@ -30,8 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) ThrioRegistrySet<id<NavigatorPageObserverProtocol> > *observers;
 
+// 记录最后一个页面Router
 @property (nonatomic) NavigatorPageRoute *lastRoute;
-
+// 记录最后一个页面的前一个页面的Rout特人
 @property (nonatomic, readonly) NavigatorPageRoute *prevLastRoute;
 
 

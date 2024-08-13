@@ -48,16 +48,22 @@ NavigatorRouteObserverProtocol
 
 - (NavigatorFlutterEngine *)startupWithEntrypoint:(NSString *)entrypoint readyBlock:(ThrioEngineReadyCallback _Nullable)block;
 
+// 是否是主引擎（第一个引擎）
 - (BOOL)isMainEngineByEntrypoint:(NSString *)entrypoint;
 
+// 根据入口名获取引擎
 - (NavigatorFlutterEngine *_Nullable)getEngineByEntrypoint:(NSString *)entrypoint;
 
+// 销毁引擎
 - (void)destroyEngineByEntrypoint:(NSString *)entrypoint;
 
+// 根据引擎名获取Send Channel
 - (NavigatorRouteSendChannel *)getSendChannelByEntrypoint:(NSString *)entrypoint;
 
+// 根据入口名获取引擎 moduleContext Channel
 - (ThrioChannel *)getModuleChannelByEntrypoint:(NSString *)entrypoint;
 
+// 同步设置所有引擎context数据
 - (void)setModuleContextValue:(id _Nullable)value forKey:(NSString *)key;
 
 - (void)pushViewController:(NavigatorFlutterViewController *)viewController;
