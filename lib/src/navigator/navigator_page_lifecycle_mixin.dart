@@ -33,8 +33,10 @@ import 'thrio_navigator_implement.dart';
 
 /// 页面生命周期minxin
 mixin NavigatorPageLifecycleMixin<T extends StatefulWidget> on State<T> {
+  // 当前路由
   late RouteSettings _current;
   late final _currentObserver = _CurrentLifecycleObserver(this);
+  //主要作用是清理生命周期监听
   VoidCallback? _currentObserverCallback;
 
   late List<RouteSettings> _anchors;
@@ -117,6 +119,7 @@ mixin NavigatorPageLifecycleMixin<T extends StatefulWidget> on State<T> {
   }
 
   void _doDispose() {
+    // 页面卸载，移除观察
     Future(() => ThrioNavigatorImplement.shared()
         .observerManager
         .observers

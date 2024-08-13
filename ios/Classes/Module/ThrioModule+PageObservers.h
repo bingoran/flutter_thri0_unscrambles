@@ -26,7 +26,9 @@
 #import "NavigatorRouteSettings.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
+/**
+ * 页面观察类
+ */
 @interface ThrioModule (PageObservers)
 
 + (NavigatorPageObservers *)pageObservers;

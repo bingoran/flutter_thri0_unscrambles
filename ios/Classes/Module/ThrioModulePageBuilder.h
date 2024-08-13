@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ThrioModulePageBuilder <NSObject>
 
 /// Register native view controller builder for url.
+/// 为url注册native视图控制器生成器
 ///
 /// Do not override this method.
 ///
@@ -35,8 +36,10 @@ NS_ASSUME_NONNULL_BEGIN
                                   forUrl:(NSString *)url;
 
 /// Sets the `NavigatorFlutterViewController` builder.
+/// 设置 NavigatorFlutterViewController 构建器
 ///
 /// Need to be register when extending the `NavigatorFlutterViewController` class.
+/// 当扩展 NavigatorFlutterViewController 类时需要注册
 ///
 /// Do not override this method.
 ///
@@ -49,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ThrioModule (PageBuilder) <ThrioModulePageBuilder>
 
 /// A function for register a `PageBuilder` .
+/// 注册一个PageBuilder
 ///
 - (void)onPageBuilderRegister:(ThrioModuleContext *)moduleContext;
 

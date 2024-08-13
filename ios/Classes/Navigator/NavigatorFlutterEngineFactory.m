@@ -30,9 +30,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NavigatorFlutterEngineFactory ()
-
+// 初始化好后的引擎，存储engines dic中
 @property (nonatomic, strong) NSMutableDictionary *engines;
-
+// 保存第一个引擎的引擎入口名
 @property (nonatomic, copy) NSString *firstEntrypoint;
 
 @end
@@ -49,22 +49,32 @@ NS_ASSUME_NONNULL_BEGIN
     return _instance;
 }
 
+/**
+ * 引擎入口：entrypoint
+ * 引擎初始化完毕后的回调block
+ */
 - (NavigatorFlutterEngine *)startupWithEntrypoint:(NSString *)entrypoint
                                        readyBlock:(ThrioEngineReadyCallback _Nullable)block {
+    // 如果是单引擎，则引擎入口名默认为main
     if (!_multiEngineEnabled) {
         entrypoint = kNavigatorDefaultEntrypoint;
     }
     NavigatorFlutterEngine *engine = _engines[entrypoint];
+    // 未初始化过
     if (!engine) {
+        // 生成引擎名
         NSString *enginName = [NSString stringWithFormat:@"io.flutter.%lu", (unsigned long)self.hash];
+        // flutter engine 初始化
         ThrioFlutterEngine *flutterEngine = [[ThrioFlutterEngine alloc] initWithName:enginName allowHeadlessExecution:YES];
         engine = [[NavigatorFlutterEngine alloc] initWithEntrypoint:entrypoint withEngine:flutterEngine];
         if (_engines.count < 1) {
+            // 记录第一个引擎入口名
             _firstEntrypoint = entrypoint;
         }
         _engines[entrypoint] = engine;
         [engine startupWithReadyBlock:block];
     } else {
+        // 如果因为存在，直接返回
         if (block) {
             block(engine);
         }

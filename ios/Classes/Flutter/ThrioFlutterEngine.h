@@ -36,6 +36,14 @@ NS_ASSUME_NONNULL_BEGIN
  * @param allowHeadlessExecution Whether or not to allow this instance to continue
  *   running after passing a nil `FlutterViewController` to `-setViewController:`.
  */
+/**
+ * 初始化这个 FlutterEngine。
+ *
+ * 一个新初始化的引擎在调用 `-runWithEntrypoint:` 或 `-runWithEntrypoint:libraryURI:` 之前不会运行。
+ *
+ * labelPrefix 用于标识此实例线程的标签前缀。应该在 FlutterEngine 实例之间唯一，并用于仪器监测中标记该 FlutterEngine 使用的线程。
+ * allowHeadlessExecution 是否允许此实例在传递 nil `FlutterViewController` 到 `-setViewController:` 后继续运行。
+ */
 - (instancetype)initWithName:(NSString *)labelPrefix
       allowHeadlessExecution:(BOOL)allowHeadlessExecution;
 
@@ -45,6 +53,10 @@ NS_ASSUME_NONNULL_BEGIN
  *   FlutterDefaultDartEntrypoint (or nil); this will default to `main()`.  If it is not the app's
  *   main() function, that function must be decorated with `@pragma(vm:entry-point)` to ensure the
  *   method is not tree-shaken by the Dart compiler..
+ */
+/**
+ * 创建一个运行中的 `FlutterEngine`，该引擎与当前引擎共享组件。
+ * entrypoint Dart 库中的顶级函数的名称。如果是 FlutterDefaultDartEntrypoint（或 nil），则默认为 `main()`。如果不是应用程序的 `main()` 函数，该函数必须用 `@pragma(vm:entry-point)` 装饰，以确保 Dart 编译器不会对该方法进行树摇优化（tree-shaking）。
  */
 - (ThrioFlutterEngine*)forkWithEntrypoint:(NSString *)entrypoint
                          withInitialRoute:(nullable NSString *)initialRoute

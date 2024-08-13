@@ -25,11 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIApplication (Thrio)
 
-/// Gets the topmost UIViewController.
+/// 获取最上层的 UIViewController
 ///
 - (UIViewController *)topmostViewController;
 
-/// Gets the topmost UINavigationController.
+/// 获取最上层的 UINavigationController.
 ///
 - (UINavigationController *_Nullable)topmostNavigationController;
 

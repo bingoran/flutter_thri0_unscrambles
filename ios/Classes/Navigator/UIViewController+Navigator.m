@@ -624,6 +624,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary *notifies = [route removeNotify];
     for (NSString *name in notifies.allKeys) {
         id params = notifies[name];
+        // 如果是flutter页面，则发送一个event事件过去
         if ([self isKindOfClass:NavigatorFlutterViewController.class]) {
             id serializeParams = [ThrioModule serializeParams:params];
             NSDictionary *arguments = serializeParams ? @{
@@ -641,6 +642,7 @@ NS_ASSUME_NONNULL_BEGIN
             [NavigatorFlutterEngineFactory.shared getSendChannelByEntrypoint:entrypoint];
             [channel notify:arguments];
         } else {
+            // native侧，直接调用实现了NavigatorPageNotifyProtocol协议的方法
             id deserializeParams = [ThrioModule deserializeParams:params];
             if ([self conformsToProtocol:@protocol(NavigatorPageNotifyProtocol)]) {
                 [(id<NavigatorPageNotifyProtocol>)self onNotify:name params:deserializeParams];

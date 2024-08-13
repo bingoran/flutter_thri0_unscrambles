@@ -310,7 +310,7 @@ mixin ThrioModule {
   Future<void> onModuleUnloading(ModuleContext moduleContext) async =>
       verbose('onModuleUnloading: $key');
 
-  /// A用于模块异步初始化的函数
+  /// 用于模块异步初始化的函数
   ///
   @protected
   Future<void> onModuleAsyncInit(ModuleContext moduleContext) async {}

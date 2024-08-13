@@ -27,10 +27,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Signature for a block that deserialize json map to object.
+/// 签名块反序列化json映射到对象
 ///
 typedef id _Nullable (^ThrioJsonDeserializer)(NSDictionary *params);
 
 /// Signature for a block that serializer json object to map.
+/// 将json对象序列化为map
 ///
 typedef NSDictionary *_Nullable (^ThrioJsonSerializer)(id);
 

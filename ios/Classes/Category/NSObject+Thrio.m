@@ -10,6 +10,7 @@
 
 @implementation NSObject (Thrio)
 
+// 是否可以转换为flutter数据
 - (BOOL)canTransToFlutter {
     return [self isKindOfClass:NSNumber.class] ||
            [self isKindOfClass:NSString.class] ||

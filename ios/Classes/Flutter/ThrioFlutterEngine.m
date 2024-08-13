@@ -30,12 +30,23 @@
 
 @implementation ThrioFlutterEngine
 
-
+/**
+ * 初始化这个 FlutterEngine。
+ *
+ * 一个新初始化的引擎在调用 `-runWithEntrypoint:` 或 `-runWithEntrypoint:libraryURI:` 之前不会运行。
+ *
+ * labelPrefix 用于标识此实例线程的标签前缀。应该在 FlutterEngine 实例之间唯一，并用于仪器监测中标记该 FlutterEngine 使用的线程。
+ * allowHeadlessExecution 是否允许此实例在传递 nil `FlutterViewController` 到 `-setViewController:` 后继续运行。
+ */
 - (instancetype)initWithName:(NSString *)labelPrefix
       allowHeadlessExecution:(BOOL)allowHeadlessExecution {
     return [super initWithName:labelPrefix project:nil allowHeadlessExecution:allowHeadlessExecution];
 }
 
+/**
+ * 创建一个运行中的 `FlutterEngine`，该引擎与当前引擎共享组件。
+ * entrypoint Dart 库中的顶级函数的名称。如果是 FlutterDefaultDartEntrypoint（或 nil），则默认为 `main()`。如果不是应用程序的 `main()` 函数，该函数必须用 `@pragma(vm:entry-point)` 装饰，以确保 Dart 编译器不会对该方法进行树摇优化（tree-shaking）。
+ */
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
 - (ThrioFlutterEngine*)forkWithEntrypoint:(NSString *)entrypoint
@@ -47,6 +58,7 @@
 #pragma clang diagnostic pop
 
 - (id)performSelector:(SEL)aSelector withObject:(id)obj1 withObject:(id)obj2 withObject:(id)obj3 withObject:(id)obj4 {
+    // 如果传递进来的选择器为空，则调用doesNotRecognizeSelector抛出异常
     if (!aSelector) [self doesNotRecognizeSelector:aSelector];
     return ((id(*)(id, SEL, id, id, id, id))objc_msgSend)(self, aSelector, obj1, obj2, obj3, obj4);
 }

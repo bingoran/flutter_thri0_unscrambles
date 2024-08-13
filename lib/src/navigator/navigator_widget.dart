@@ -229,6 +229,7 @@ class NavigatorWidgetState extends State<NavigatorWidget> {
         route.settings.url,
         settings.params,
       );
+      // 执行完清空poppedResult保存的回调函数
       route.poppedResult = null;
       return value;
     });

@@ -24,7 +24,7 @@
 @implementation NSPointerArray (Thrio)
 
 - (BOOL)empty {
-    [self compact];
+    [self compact];//消除数组中的空指针
     return self.count == 0;
 }
 

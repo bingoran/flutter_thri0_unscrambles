@@ -61,6 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
         __weak typeof(self) weakself = self;
         __block ThrioEngineReadyCallback readyBlock = ^(NavigatorFlutterEngine *engine) {
             __strong typeof(weakself) strongSelf = weakself;
+            // 初始化准备完成后，push到initialUrl页面
             [strongSelf.topViewController thrio_pushUrl:strongSelf.initialUrl
                                                   index:@1
                                                  params:strongSelf.initialParams

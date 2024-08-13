@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ThrioModulePageObserver <NSObject>
 
 /// Register observers for the life cycle of native pages and Dart pages.
+/// 注册原生页面和 Dart 页面生命周期的观察者
 ///
 /// Do not override this method.
 ///

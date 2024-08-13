@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (self) {
         self.thrio_hidesNavigationBar_ = @YES;
         self.hidesBottomBarWhenPushed = YES;
-        
+        // 注册页面回到前台还是退回后退的通知
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(viewDidAppearFromBackgroud)
                                                      name:UIApplicationDidBecomeActiveNotification

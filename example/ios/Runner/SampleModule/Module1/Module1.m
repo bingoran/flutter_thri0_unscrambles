@@ -24,15 +24,19 @@
 }
 
 - (void)willAppear:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>willAppear == 1  %@",routeSettings.url);
 }
 
 - (void)didAppear:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>didAppear == 1  %@",routeSettings.url);
 }
 
 - (void)willDisappear:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>willDisappear == 1  %@",routeSettings.url);
 }
 
 - (void)didDisappear:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"didDisappear == 1  %@",routeSettings.url);
 }
 
 @end

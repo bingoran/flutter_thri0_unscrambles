@@ -24,6 +24,10 @@ NS_ASSUME_NONNULL_BEGIN
     [self registerRouteObserver:self];
 }
 
+- (void)onPageObserverRegister:(ThrioModuleContext *)moduleContext {
+    [self registerPageObserver:self];
+}
+
 - (void)didPop:(NavigatorRouteSettings *)routeSettings {
 }
 
@@ -36,7 +40,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didRemove:(NavigatorRouteSettings *)routeSettings {
 }
 
+- (void)willAppear:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>willAppear == 2  %@",routeSettings.url);
+}
 
+- (void)didAppear:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>didAppear == 2  %@",routeSettings.url);
+}
+
+- (void)willDisappear:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>willDisappear == 2  %@",routeSettings.url);
+}
+
+- (void)didDisappear:(NavigatorRouteSettings *)routeSettings {
+    NSLog(@"====>>>didDisappear == 2  %@",routeSettings.url);
+}
 
 @end
 

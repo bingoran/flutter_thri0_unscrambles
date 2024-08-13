@@ -25,7 +25,7 @@
 #import "ThrioModule+PageBuilders.h"
 
 @implementation ThrioModule (PageBuilder)
-
+// 注册PageBuilder
 - (ThrioVoidCallback)registerPageBuilder:(NavigatorPageBuilder)builder
                                   forUrl:(NSString *)url {
     return [ThrioModule.pageBuilders registry:url value:builder];

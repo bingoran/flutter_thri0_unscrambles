@@ -40,7 +40,7 @@ mixin NavigatorRoute on PageRoute<bool> {
   @override
   RouteSettings get settings;
   
-  //pop回调
+  //pop回调,pop的时候，回传给上个页面的入参
   NavigatorParamsCallback? poppedResult;
   
   /// 保存pop禁用状态

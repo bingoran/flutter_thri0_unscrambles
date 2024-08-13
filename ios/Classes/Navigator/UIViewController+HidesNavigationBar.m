@@ -24,13 +24,16 @@
 
 @implementation UIViewController (HidesNavigationBar)
 
+// 获取当前导航栏掩藏状态
 - (BOOL)thrio_hidesNavigationBar {
     return [[self thrio_hidesNavigationBar_] boolValue];
 }
 
+// 设置当前导航栏掩藏｜显示
 - (void)setThrio_hidesNavigationBar:(BOOL)hidesNavigationBar {
     [self setThrio_hidesNavigationBar_:@(hidesNavigationBar)];
     if ([self.navigationController.viewControllers containsObject:self]) {
+        // 设置导航的展示或者掩藏
         self.navigationController.navigationBarHidden = hidesNavigationBar;
     }
 }

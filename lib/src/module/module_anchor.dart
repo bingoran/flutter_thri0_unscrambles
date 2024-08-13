@@ -230,11 +230,12 @@ class ModuleAnchor
     if (typeString == (NavigatorPageObserver).toString()) {
       final observers = <NavigatorPageObserver>{};
       for (final module in modules) {
-        // 如果moudel实现了ModulePageObserver
+        // 如果moudel实现了ModulePageObserver；加入module得监听器
         if (module is ModulePageObserver) {
           observers.addAll(module.pageObservers);
         }
       }
+      // 再把页面的监听器加入进去
       observers.addAll(pageLifecycleObservers[url]);
       //cast 类型转换，将observers里的元素转换为T，如果转换不了就忽略
       return observers.toList().cast<T>();

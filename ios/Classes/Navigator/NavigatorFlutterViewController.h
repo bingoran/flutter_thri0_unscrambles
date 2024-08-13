@@ -25,7 +25,7 @@
 #import "FlutterThrioTypes.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
+// 承载Flutter页面的VC类
 @interface NavigatorFlutterViewController : FlutterViewController <UINavigationControllerDelegate>
 
 - (instancetype)initWithEngine:(NavigatorFlutterEngine *)engine NS_DESIGNATED_INITIALIZER;
@@ -46,9 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
                          bundle:(nullable NSBundle *)nibBundle NS_UNAVAILABLE;
 
 - (void)surfaceUpdated:(BOOL)appeared;
-
+// 页面入口
 @property (nonatomic, copy, readonly) NSString *entrypoint;
-
+// 页面对应的引擎
 @property (nonatomic, weak, readonly) NavigatorFlutterEngine *warpEngine;
 
 @end

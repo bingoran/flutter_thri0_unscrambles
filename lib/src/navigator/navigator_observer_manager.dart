@@ -54,6 +54,7 @@ class NavigatorObserverManager extends NavigatorObserver {
         'index->${route.settings.index} ',
       );
       pageRoutes.add(route);
+      // 执行路由操作和页面生命周期操作
       ThrioNavigatorImplement.shared()
         ..routeChannel.didPush(route.settings)
         ..pageChannel.didAppear(route.settings, NavigatorRouteType.push);

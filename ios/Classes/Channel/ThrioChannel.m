@@ -68,6 +68,7 @@ static NSString *const kEventNameKey = @"__event_name__";
 - (instancetype)initWithEngine:(NavigatorFlutterEngine *)engine name:(NSString *)channelName {
     self = [super init];
     if (self) {
+        // 多引擎模式下，引擎入口名不能为main
         if (NavigatorFlutterEngineFactory.shared.multiEngineEnabled &&
             [engine.entrypoint isEqualToString:kNavigatorDefaultEntrypoint]) {
             @throw [NSException exceptionWithName:@"ThrioException"
@@ -137,7 +138,7 @@ static NSString *const kEventNameKey = @"__event_name__";
 }
 
 #pragma mark - event channel methods
-
+// native向flutter发送event事件
 - (void)sendEvent:(NSString *)name arguments:(NSDictionary *_Nullable)arguments {
     if (self.eventSink) {
         id args = [NSMutableDictionary dictionaryWithDictionary:arguments];

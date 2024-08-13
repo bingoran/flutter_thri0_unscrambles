@@ -30,13 +30,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ * flutter 引擎工厂
+  */
 @interface NavigatorFlutterEngineFactory : NSObject<
 NavigatorPageObserverProtocol,
 NavigatorRouteObserverProtocol
 >
 
+// 是否启用多引擎
 @property (nonatomic) BOOL multiEngineEnabled;
-
+// 主引擎是否预启动
 @property (nonatomic) BOOL mainEnginePreboot;
 
 + (instancetype)shared;

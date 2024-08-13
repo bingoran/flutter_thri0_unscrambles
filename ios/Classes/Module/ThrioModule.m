@@ -43,6 +43,7 @@
 
 static NSMutableDictionary *modules;
 
+// APP主mudule
 static ThrioModule *_module;
 
 /**
@@ -50,10 +51,15 @@ static ThrioModule *_module;
  * preboot 是否提前启动
  */
 + (void)init:(ThrioModule *)module preboot:(BOOL)preboot {
+    // 记录引擎预启动标识
     NavigatorFlutterEngineFactory.shared.mainEnginePreboot = preboot;
+    // 创建一个moduleContext对象
     ThrioModuleContext *moduleContext = [[ThrioModuleContext alloc] init];
+    // 主module赋值
     _module = module;
+    // module注册
     [_module registerModule:module withModuleContext:moduleContext];
+    // 初始化
     [_module initModule];
 }
 
@@ -66,17 +72,23 @@ static ThrioModule *_module;
     return _module;
 }
 
+/**
+ * 由主模块开始，通过onModuleRegister，链式注册APP提供的module，并将module存储在modules中
+ */
 - (void)registerModule:(ThrioModule *)module
      withModuleContext:(ThrioModuleContext *)moduleContext {
     if (!modules) {
         modules = [NSMutableDictionary dictionary];
     }
+    // 模块的类名作为key
     NSString *key = NSStringFromClass([module class]);
     if ([[modules allKeys] containsObject:key]) {
+        // 抛出重复注册异常
         [NSException raise:@"Duplicate registration exception"
                     format:@"%@ already registered", key];
     }
     [modules setObject:module forKey:key];
+    // 设置模块context
     module.moduleContext = moduleContext;
     [module onModuleRegister:moduleContext];
 }
@@ -135,12 +147,15 @@ static ThrioModule *_module;
 - (NavigatorFlutterEngine *)startupFlutterEngineWithEntrypoint:(NSString *)entrypoint
                                                     readyBlock:(ThrioEngineReadyCallback _Nullable)block  {
     __weak typeof(self) weakself = self;
+    // 引擎ready后的回调函数
     ThrioEngineReadyCallback readyBlock = ^(NavigatorFlutterEngine *engine) {
+        
         __strong typeof(weakself) strongSelf = weakself;
         NSMutableDictionary *canTransParams = [NSMutableDictionary dictionary];
         for (NSString *key in strongSelf.moduleContext.params) {
             id value = strongSelf.moduleContext.params[key];
             value = [ThrioModule serializeParams:value];
+            // 可以转换为flutter可用的数据，存储在canTransParams Dic中
             if ([value canTransToFlutter]) {
                 canTransParams[key] = value;
             }

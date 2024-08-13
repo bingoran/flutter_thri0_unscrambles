@@ -25,10 +25,12 @@
 
 @implementation UIViewController (Internal)
 
+// 获取当前VC willPop出发状态
 - (BOOL)thrio_willPopCalling {
     return [(NSNumber *)objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
+// 设置当前VC willPop 是否触发的状态
 - (void)setThrio_willPopCalling:(BOOL)calling {
     objc_setAssociatedObject(self,
                              @selector(thrio_willPopCalling),
@@ -36,10 +38,12 @@
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+// 获取当前VC的导航栏掩藏显示状态
 - (NSNumber *_Nullable)thrio_hidesNavigationBar_ {
     return objc_getAssociatedObject(self, @selector(thrio_hidesNavigationBar_));
 }
 
+// 保存当前VC的导航栏状态
 - (void)setThrio_hidesNavigationBar_:(NSNumber *_Nullable)hidesNavigationBar {
     objc_setAssociatedObject(self,
                              @selector(thrio_hidesNavigationBar_),

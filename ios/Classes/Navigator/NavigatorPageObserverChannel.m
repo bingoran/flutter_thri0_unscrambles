@@ -86,6 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
         NSString *routeTypeString = arguments[@"routeType"];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        // 实际是调用的 ThrioModule+PageObservers 分类里实现的方法
         SEL selector = NSSelectorFromString([NSString stringWithFormat:@"%@:routeType:", method]);
         [ThrioModule performSelector:selector withObject:settings withObject:routeTypeString];
 #pragma clang diagnostic pop

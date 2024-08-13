@@ -42,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)willAppear:(NavigatorRouteSettings *)routeSettings
          routeType:(NSString *)routeTypeString {
     NavigatorRouteType routeType = [self routeTypeFromString:routeTypeString];
+    // 拿到当前导航器
     UINavigationController *nvc = ThrioNavigator.navigationController;
     if (routeType == NavigatorRouteTypePush) {
         [ThrioModule.pageObservers willAppear:routeSettings];

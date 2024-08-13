@@ -96,6 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
     BOOL canNotify = YES;
     NSArray *allNvcs = [self.navigationControllers.allObjects.reverseObjectEnumerator allObjects];
     for (UINavigationController *nvc in allNvcs) {
+        // 发送通知
         if (![nvc thrio_notifyUrl:url index:index name:name params:params]) {
             canNotify = NO;
         }

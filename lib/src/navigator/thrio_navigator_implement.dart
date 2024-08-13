@@ -66,7 +66,7 @@ class ThrioNavigatorImplement {
     
     _channel =
         ThrioChannel(channel: '__thrio_app__${moduleContext.entrypoint}');
-    /// 回调监听，native调用 __thrio_module_context__XXX channel的 set 后触发
+    /// 回调监听，native调用 __thrio_module_context__XXX channel的 set 后触发，只接收set channel的回调
     ThrioChannel(channel: '__thrio_module_context__${moduleContext.entrypoint}')
         .registryMethodCall('set', ([final arguments]) async {
       if (arguments == null || arguments.isEmpty) {
@@ -139,7 +139,7 @@ class ThrioNavigatorImplement {
   //push 返回操作
   final _pushReturnHandlers = RegistrySet<NavigatorPushHandle>();
   
-  //pop结果
+  //pop回调结果执行方法，存储在poppedResults中
   final poppedResults = <String, NavigatorParamsCallback>{};
   
   //当前pop的路由数组
@@ -201,7 +201,8 @@ class ThrioNavigatorImplement {
       fromURL: fromURL,
       innerURL: innerURL,
     );
-
+    
+    // push后回传pop参数的Completer
     final completer = Completer<TPopParams?>();
     // 先处理自定义路由操作
     final handled = await _pushToHandler(

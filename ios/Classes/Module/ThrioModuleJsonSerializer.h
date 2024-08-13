@@ -29,8 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ThrioModuleJsonSerializer <NSObject>
 
 /// Register json serializer for class.
-///
+/// 注册json序列化类
 /// Do not override this method.
+/// 别覆盖这个方法
 ///
 - (ThrioVoidCallback)registerJsonSerializer:(ThrioJsonSerializer)serializer
                                    forClass:(Class)clazz;

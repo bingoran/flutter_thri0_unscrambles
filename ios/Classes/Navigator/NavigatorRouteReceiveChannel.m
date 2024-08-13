@@ -112,10 +112,10 @@ NS_ASSUME_NONNULL_BEGIN
                         animated:animated
                   fromEntrypoint:strongSelf.channel.engine.entrypoint
                           result:^(NSNumber *idx) {
-            if (result) {
-                result(idx);
-            }
-        }
+                            if (result) {
+                                    result(idx);
+                                }
+                            }
                          fromURL:fromURL
                          prevURL:prevURL
                         innerURL:innerURL

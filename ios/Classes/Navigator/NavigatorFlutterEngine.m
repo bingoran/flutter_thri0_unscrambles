@@ -64,10 +64,14 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
+// 启动引擎
 - (void)startupWithReadyBlock:(ThrioEngineReadyCallback _Nullable)block {
     if (_flutterEngine) {
+        // flutter 引擎初始化
         [self startupFlutterEngine];
+        // 插件注册
         [self registerPlugins];
+        // 启动channel
         [self setupChannelWithReadyBlock:block];
     }
 }
@@ -109,21 +113,25 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - private methods
-
+//启动 flutter 引擎
 - (void)startupFlutterEngine {
     BOOL result = NO;
     if (NavigatorFlutterEngineFactory.shared.multiEngineEnabled) {
+        // 多引擎启动，根据入口名
         result = [_flutterEngine runWithEntrypoint:_entrypoint];
     } else {
+        // 单引擎启动
         result = [_flutterEngine run];
     }
     if (!result) {
+        // 引擎启动失败，抛出异常
         @throw [NSException exceptionWithName:@"FlutterFailedException"
                                        reason:@"run flutter engine failed!"
                                      userInfo:nil];
     }
 }
 
+// 插件注册
 - (void)registerPlugins {
     Class clazz = NSClassFromString(@"GeneratedPluginRegistrant");
     if (clazz) {
@@ -137,26 +145,35 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+/**
+ * 启动channel
+ */
 - (void)setupChannelWithReadyBlock:(ThrioIdCallback _Nullable)block {
     NSString *channelName = [NSString stringWithFormat:@"__thrio_app__%@", self.entrypoint];
     _channel = [ThrioChannel channelWithEngine:self name:channelName];
+    // 设置Event Channel
     [_channel setupEventChannel];
+    // 设置Method Channel
     [_channel setupMethodChannel];
     
     NSString *moduleContextChannelName =
     [NSString stringWithFormat:@"__thrio_module_context__%@", self.entrypoint];
     _moduleContextChannel = [ThrioChannel channelWithEngine:self name:moduleContextChannelName];
+    // 设置Method Channel
     [_moduleContextChannel setupMethodChannel];
     
+    // 接收channel
     _receiveChannel = [[NavigatorRouteReceiveChannel alloc] initWithChannel:_channel withReadyBlock:block];
-    
+    // 发送channel
     _sendChannel = [[NavigatorRouteSendChannel alloc] initWithChannel:_channel];
     
+    // 路由channel
     channelName = [NSString stringWithFormat:@"__thrio_route_channel__%@", self.entrypoint];
     ThrioChannel *routeChannel = [ThrioChannel channelWithEngine:self name:channelName];
     [routeChannel setupMethodChannel];
     _routeChannel = [[NavigatorRouteObserverChannel alloc] initWithChannel:routeChannel];
     
+    // 页面channel
     channelName = [NSString stringWithFormat:@"__thrio_page_channel__%@", self.entrypoint];
     ThrioChannel *pageChannel = [ThrioChannel channelWithEngine:self name:channelName];
     [pageChannel setupMethodChannel];
