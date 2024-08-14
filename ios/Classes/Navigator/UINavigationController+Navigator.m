@@ -74,8 +74,10 @@ NS_ASSUME_NONNULL_BEGIN
              innerURL:(NSString *_Nullable)innerURL
          poppedResult:(ThrioIdCallback _Nullable)poppedResult {
     @synchronized (self) {
+        
         UIViewController *viewController = [self thrio_createNativeViewControllerWithUrl:url params:params];
         if (viewController) {
+            // 如果能找到url对应的native侧的VC
             [self thrio_pushViewController:viewController
                                        url:url
                                     params:params
@@ -91,8 +93,10 @@ NS_ASSUME_NONNULL_BEGIN
             if (NavigatorFlutterEngineFactory.shared.multiEngineEnabled) {
                 entrypoint = [url componentsSeparatedByString:@"/"][1];
             }
+            // 如果最顶层就是一个FlutterViewController，并且FlutterViewController对应的引擎和即将push的页面的引擎一样
             if ([self.topViewController isKindOfClass:NavigatorFlutterViewController.class] &&
                 [[(NavigatorFlutterViewController *)self.topViewController entrypoint] isEqualToString:entrypoint]) {
+                // 看看当前路由栈里有没有相同url的页面，如果有，需要在即将push的页面index+1以区别出相同url的不同页面
                 NavigatorPageRoute *lastRoute = [ThrioNavigator getLastRouteByUrl:url];
                 NSNumber *index = lastRoute ? @(lastRoute.settings.index.integerValue + 1) : @1;
                 ThrioNumberCallback resultBlock = ^(NSNumber *idx) {
@@ -114,6 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
                                              innerURL:innerURL
                                          poppedResult:poppedResult];
             } else {
+                // 否者，就初始化一个引擎新的引擎，等引擎初始化完毕后，再push这个页面
                 __weak typeof(self) weakself = self;
                 ThrioEngineReadyCallback readyBlock = ^(NavigatorFlutterEngine * engine) {
                     NavigatorVerbose(@"push entrypoint: %@, url:%@", entrypoint, url);
