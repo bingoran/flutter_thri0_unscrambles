@@ -459,6 +459,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Get `FlutterEngine` instance by entrypoint.
 ///
 /// Should be called after the engine is initialized.
+/// 需要在引擎初始化后调用
 ///
 + (FlutterEngine *)getEngineByViewContontroller:(NavigatorFlutterViewController *)viewController
                                  withEntrypoint:(NSString *)entrypoint;

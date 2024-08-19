@@ -93,6 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
     return _engines[entrypoint];
 }
 
+// 销毁引擎
 - (void)destroyEngineByEntrypoint:(NSString *)entrypoint {
     if (![entrypoint isEqualToString:_firstEntrypoint]) {
         NavigatorFlutterEngine *engine = _engines[entrypoint];
