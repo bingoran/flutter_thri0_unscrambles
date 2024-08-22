@@ -1225,7 +1225,8 @@ class ThrioNavigatorImplement {
     );
     return buildWithSettings(settings: settings);
   }
-
+  
+  // 通过路由获取页面
   Widget? buildWithSettings<TParams>({required RouteSettings settings}) {
     final pageBuilder =
         ThrioModule.get<NavigatorPageBuilder>(url: settings.url);

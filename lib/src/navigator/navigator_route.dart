@@ -34,7 +34,7 @@ enum NavigatorRouteType { push, pop, popTo, remove, replace }
 /// flutter 的路由都要进过该类
 ///
 mixin NavigatorRoute on PageRoute<bool> {
-  /// 路由状态
+  /// 路由类型
   NavigatorRouteType? routeType;
 
   @override
