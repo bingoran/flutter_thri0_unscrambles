@@ -63,6 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
         // 如果启用了多引擎
         if (NavigatorFlutterEngineFactory.shared.multiEngineEnabled) {
             // 引擎名使用传入url的第二个：例如 a/b/c 这样处理后，引擎名就是b
+            // /b/c 这样处理后，引擎名也是b
             entrypoint = [url componentsSeparatedByString:@"/"][1];
         }
         __weak typeof(self) weakself = self;
